@@ -1,0 +1,41 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Agent extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'supervisor_id'
+    ];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    // Relationship: An agent can have many tickets
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class);
+    }
+
+    // Relationship: An agent can have many ticket responses
+    public function responses()
+    {
+        return $this->hasMany(TicketResponse::class);
+    }
+
+    // Relationship: An agent belongs to a supervisor
+    public function supervisor()
+    {
+        return $this->belongsTo(Supervisor::class);
+    }
+}

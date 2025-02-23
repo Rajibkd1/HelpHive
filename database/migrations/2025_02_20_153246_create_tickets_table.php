@@ -17,9 +17,9 @@ return new class extends Migration
                 $table->string('title');
                 $table->text('description');
                 $table->enum('status', ['open', 'in-progress', 'resolved', 'closed'])->default('open');
-                $table->enum('priority', ['low', 'medium', 'high'])->default('medium');  // Added priority field
-                $table->foreignId('customer_id')->constrained('customers')->onDelete('cascade'); // Reference to customer
-                $table->foreignId('agent_id')->nullable()->constrained('agents')->onDelete('set null'); // Reference to agent
+                $table->enum('priority', ['low', 'medium', 'high'])->default('medium');  
+                $table->foreignId('customer_id')->constrained('customers')->onDelete('cascade'); 
+                $table->foreignId('agent_id')->nullable()->constrained('agents')->onDelete('set null');
                 $table->timestamps();
             });
         });
