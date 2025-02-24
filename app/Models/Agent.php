@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable; 
+use Illuminate\Notifications\Notifiable;
 
-class Agent extends Model
+class Agent extends Authenticatable
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
 
     protected $fillable = [
         'name',
@@ -20,6 +22,23 @@ class Agent extends Model
         'password',
         'remember_token',
     ];
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
+    public function getAuthIdentifierName()
+    {
+        return 'email'; // Use email as the identifier
+    }
+
+    public function getAuthIdentifier()
+    {
+        return $this->email;
+    }
+
+    public function getAuthPassword()
+    {
+        return $this->password;
+    }
 
     // Relationship: An agent can have many tickets
     public function tickets()

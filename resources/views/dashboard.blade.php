@@ -8,7 +8,7 @@
 </head>
 <body>
 
-    <h1>Welcome, {{ $customer->name }}!</h1>
+    <h3>Welcome, {{ Auth::user()->name }}! You are logged in as a {{ session('role') }}.</h3>
 
     <!-- Logout Form -->
     <form action="{{ route('logout') }}" method="POST">

@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use App\Mail\OtpMail;
-
+use App\Models\Agent;
+use App\Models\Supervisor;
 
 class AuthController extends Controller
 {
@@ -23,42 +24,64 @@ class AuthController extends Controller
     // Handle login
     public function login(Request $request)
     {
-        // Validate the input
+        // Validate input
         $request->validate([
             'email' => 'required|email',
             'password' => 'required|min:6',
         ]);
 
-        // Attempt to authenticate the user using Laravel's default Auth
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            // Authentication passed, redirect to dashboard
-            return redirect()->route('dashboard')->with('success', 'Login successful!');
+        // Try to find the user in each table and authenticate
+        $user = null;
+        $role = null;
+
+        // Check for customer
+        $user = Customer::where('email', $request->email)->first();
+        if ($user && Hash::check($request->password, $user->password)) {
+            session(['user' => $user, 'role' => 'customer']);
+            return redirect()->route('customer.dashboard');
         }
 
-        // Authentication failed, return with error
-        return back()->withErrors(['email' => 'Invalid login credentials'])->with('error', 'Invalid credentials!');
+        // Check for agent
+        $user = Agent::where('email', $request->email)->first();
+        if ($user && Hash::check($request->password, $user->password)) {
+            session(['user' => $user, 'role' => 'agent']);
+            return redirect()->route('agent.dashboard');
+        }
+
+        // Check for supervisor
+        $user = Supervisor::where('email', $request->email)->first();
+        if ($user && Hash::check($request->password, $user->password)) {
+            session(['user' => $user, 'role' => 'supervisor']);
+            return redirect()->route('supervisor.dashboard');
+        }
+
+        // If no user found, return with error
+        return back()->withErrors(['email' => 'Invalid login credentials']);
     }
+
 
     // Handle registration
     public function register(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:customers',  // Validate against customers table
+            'email' => 'required|email|unique:customers',
             'password' => 'required|min:6|confirmed',
+            'role' => 'required|in:customer,agent,supervisor',
         ]);
 
         $customer = Customer::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => $request->role,
         ]);
 
-        // Log in the customer after registration
         Auth::login($customer);
 
         return redirect()->route('dashboard');
     }
+
 
     // Logout
     public function logout()
@@ -70,13 +93,9 @@ class AuthController extends Controller
     // Show the dashboard
     public function dashboard()
     {
-        // Use Auth::check() to check if the user is authenticated
-        if (!Auth::check()) {
-            return redirect()->route('login');  // Redirect to login if not authenticated
-        }
+        $role = session('role'); // Get the role from session
 
-        $customer = Auth::user();  // Get the authenticated customer
-        return view('dashboard', ['customer' => $customer]);  // Pass customer data to the view
+        return view('dashboard', ['role' => $role]); // Pass role to the dashboard
     }
 
     // Send OTP to the user's email
@@ -125,5 +144,4 @@ class AuthController extends Controller
 
         return response()->json(['success' => false, 'message' => 'Invalid OTP']);
     }
-
 }
