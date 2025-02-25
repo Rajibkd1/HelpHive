@@ -1,17 +1,83 @@
 @extends('customer.sidebar')
 
 @section('sidebar-content')
-    <h2 class="text-xl mb-4">Welcome to your Customer Dashboard!</h2>
-    <p>Here you can manage your personal details, view your orders, and more.</p>
+<body class="bg-gray-50 p-6">
+    <div class="max-w-7xl mx-auto">
+        <h1 class="text-2xl font-semibold text-gray-900 mb-6">Dashboard</h1>
 
+        <!-- Metrics Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <!-- Created tickets -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h3 class="text-sm font-medium text-gray-500 mb-2">Created tickets</h3>
+                <p class="text-3xl font-semibold text-gray-900">98</p>
+            </div>
 
-        <!-- Logout Button -->
-        <div class="mt-4 text-center">
-            <form action="{{ route('logout') }}" method="POST">
-                @csrf
-                <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-700">
-                    Logout
-                </button>
-            </form>
+            <!-- Pending tickets -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h3 class="text-sm font-medium text-gray-500 mb-2">Pending tickets</h3>
+                <p class="text-3xl font-semibold text-gray-900">7</p>
+            </div>
+
+            <!-- Solved tickets -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h3 class="text-sm font-medium text-gray-500 mb-2">Solved tickets</h3>
+                <p class="text-3xl font-semibold text-gray-900">118</p>
+            </div>
         </div>
+
+        <!-- Chart -->
+        <div class="bg-white rounded-lg shadow p-6">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Created tickets this year</h3>
+            <div class="h-[400px]">
+                <canvas id="ticketsChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Chart data
+        const ctx = document.getElementById('ticketsChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
+                datasets: [{
+                    label: 'Opened Tickets',
+                    data: [30, 25, 25, 18, 8, 3, 5, 4, 5, 42, 35, 18],
+                    fill: true,
+                    backgroundColor: 'rgba(59, 130, 246, 0.2)', // Light blue with opacity
+                    borderColor: 'rgb(59, 130, 246)', // Blue
+                    tension: 0.4,
+                    pointRadius: 2,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.1)',
+                        },
+                        ticks: {
+                            stepSize: 5
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
 @endsection

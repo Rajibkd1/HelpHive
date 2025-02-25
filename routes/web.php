@@ -16,6 +16,7 @@ Route::post('/register', [AuthController::class, 'register'])->name('register');
 
 Route::get('/dashboard', [AuthController::class, 'dashboard'])->middleware('auth')->name('dashboard'); // Route for the dashboard
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 
 Route::post('/send-otp', [AuthController::class, 'sendOtp'])->name('send-otp');
@@ -25,6 +26,8 @@ Route::post('/verify-otp', [AuthController::class, 'verifyOtp'])->name('verify-o
 Route::get('/customer-dashboard', [CustomerDashboardController::class, 'index'])
     ->middleware('role:customer')
     ->name('customer.dashboard');  // Apply role middleware for customers and add name
+
+
 
 // Agent dashboard route
 Route::get('/agent-dashboard', [AgentDashboardController::class, 'index'])
@@ -36,3 +39,12 @@ Route::get('/supervisor-dashboard', [SupervisorDashboardController::class, 'inde
     ->middleware('role:supervisor')
     ->name('supervisor.dashboard');  // Apply role middleware for supervisors and add name
 
+// Protect routes with authentication middleware
+Route::middleware('role:customer')->group(function () {
+        // Route to show tickets
+Route::get('/customer-dashboard/tickets', [CustomerDashboardController::class, 'showTickets'])->name('customer.tickets');
+
+Route::get('/customer/ticket/create', [CustomerDashboardController::class, 'createTicket'])->name('ticket.create');
+Route::post('/customer/ticket/store', [CustomerDashboardController::class, 'storeTicket'])->name('ticket.store');
+Route::get('/customer/ticket/{ticketId}', [CustomerDashboardController::class, 'showTicketDetails'])->name('ticket.details');
+});

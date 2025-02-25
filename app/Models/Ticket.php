@@ -15,7 +15,8 @@ class Ticket extends Model
         'status',
         'priority',
         'customer_id',
-        'agent_id'
+        'agent_id',
+        'department_id',
     ];
 
     // Relationship: A ticket belongs to a customer
@@ -34,6 +35,10 @@ class Ticket extends Model
     public function responses()
     {
         return $this->hasMany(TicketResponse::class);
+    }
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
     }
 
     // Relationship: A ticket can have many uploads (file attachments)

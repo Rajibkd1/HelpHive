@@ -2,7 +2,6 @@
 @section('content')
 <head>
     <style>
-
         body {
             font-family: 'Inter', sans-serif;
         }
@@ -30,6 +29,18 @@
         /* Style for selected item */
         .selected {
             background-color: #475569;
+        }
+
+        /* Gradient background for sidebar */
+        .sidebar-gradient {
+            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+        }
+
+        /* Hover effect for sidebar items */
+        .sidebar-item:hover {
+            background-color: #334155;
+            transform: translateX(5px);
+            transition: all 0.3s ease;
         }
 
     </style>
@@ -62,7 +73,7 @@
     <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 lg:hidden hidden z-20" onclick="toggleMobileMenu()"></div>
 
     <!-- Sidebar -->
-    <aside id="sidebar" class="fixed inset-y-0 left-0 w-64 bg-slate-800 transform -translate-x-full lg:translate-x-0 transition-transform duration-200 ease-in-out z-30">
+    <aside id="sidebar" class="fixed inset-y-0 left-0 w-64 sidebar-gradient transform -translate-x-full lg:translate-x-0 transition-transform duration-200 ease-in-out z-30">
 
         <!-- User Profile Section -->
         <div class="p-6 bg-slate-900">
@@ -72,6 +83,7 @@
                 </div>
                 <div>
                     <h2 class="text-white font-semibold">Welcome, John Doe</h2>
+                    <p class="text-sm text-slate-400">Admin</p>
                 </div>
             </div>
         </div>
@@ -86,34 +98,34 @@
             <ul class="space-y-2">
                 <li>
                     <a href="#" class="sidebar-item flex items-center gap-4 px-4 py-2 text-slate-300 hover:bg-slate-700 rounded-md group" onclick="selectItem(event)">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"></path>
+                        <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
                         </svg>
-                        <span>Dashboards</span>
+                        <span>Dashboard</span>
                     </a>
                 </li>
                 <li>
                     <a href="#" class="sidebar-item flex items-center gap-4 px-4 py-2 text-slate-300 hover:bg-slate-700 rounded-md" onclick="selectItem(event)">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
+                        <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                         </svg>
-                        <span>Layouts</span>
+                        <span>Profile</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="sidebar-item flex items-center gap-4 px-4 py-2 text-slate-300 hover:bg-slate-700 rounded-md" onclick="selectItem(event)">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                    <a href="{{ route('customer.tickets') }}" class="sidebar-item flex items-center gap-4 px-4 py-2 text-slate-300 hover:bg-slate-700 rounded-md" onclick="selectItem(event)">
+                        <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
                         </svg>
-                        <span>Graphs</span>
+                        <span>Tickets</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="sidebar-item flex items-center gap-4 px-4 py-2 text-slate-300 hover:bg-slate-700 rounded-md" onclick="selectItem(event)">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                    <a href="{{ route('logout') }}" class="sidebar-item flex items-center gap-4 px-4 py-2 text-slate-300 hover:bg-slate-700 rounded-md" onclick="selectItem(event)">
+                        <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
                         </svg>
-                        <span>Mailbox</span>
+                        <span>Logout</span>
                     </a>
                 </li>
             </ul>
@@ -146,30 +158,34 @@
 
                 <!-- Right side icons -->
                 <div class="flex items-center gap-4">
-                    <span class="hidden lg:block text-sm text-gray-600">Welcome to NavAmdin Sidebar Navigation</span>
-                    <button class="relative p-2 hover:bg-gray-100 rounded-full">
+                    <span class="hidden lg:block text-sm text-gray-600">Welcome to NavAdmin Sidebar Navigation</span>
+                
+                    <a href="#" class="relative p-2 hover:bg-gray-100 rounded-full">
                         <span class="absolute top-0 right-0 h-4 w-4 bg-red-500 text-xs text-white rounded-full flex items-center justify-center">12</span>
                         <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
                         </svg>
-                    </button>
-                    <button class="relative p-2 hover:bg-gray-100 rounded-full">
+                    </a>
+                
+                    <a href="#" class="relative p-2 hover:bg-gray-100 rounded-full">
                         <span class="absolute top-0 right-0 h-4 w-4 bg-red-500 text-xs text-white rounded-full flex items-center justify-center">8</span>
                         <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                         </svg>
-                    </button>
-                    <button class="p-2 hover:bg-gray-100 rounded-full">
+                    </a>
+                
+                    <a href="#" class="p-2 hover:bg-gray-100 rounded-full">
                         <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
                         </svg>
-                    </button>
+                    </a>
                 </div>
+                
             </div>
         </header>
 
         <!-- Main Content -->
-        <main class="pt-16 p-6">
+        <main class="pt-16 p-6 mt-60">
             @yield('sidebar-content')
         </main>
 

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->text('response');
             $table->foreignId('ticket_id')->constrained()->onDelete('cascade'); // Reference to ticket
             $table->foreignId('agent_id')->constrained('agents')->onDelete('cascade'); // Reference to agent
+            $table->string('file_path')->nullable();
             $table->timestamps();
         });
     }

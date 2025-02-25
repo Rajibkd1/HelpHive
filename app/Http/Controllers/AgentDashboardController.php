@@ -6,9 +6,9 @@ use Illuminate\Http\Request;
 
 class AgentDashboardController extends Controller
 {
-    // Apply the 'role:agent' middleware to this controller method
     public function index()
     {
-        return view('agent.agent-dashboard');  // Return the agent dashboard view
+        $user = session('user'); // Retrieve the user data from session
+        return view('agent.dashboard', compact('user')); // Pass the user data to the view
     }
 }

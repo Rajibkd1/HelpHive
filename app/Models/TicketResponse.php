@@ -12,7 +12,8 @@ class TicketResponse extends Model
     protected $fillable = [
         'response',
         'ticket_id',
-        'agent_id'
+        'agent_id',
+        'file_path'
     ];
 
     // Relationship: A ticket response belongs to a ticket
