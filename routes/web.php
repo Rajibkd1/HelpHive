@@ -41,10 +41,15 @@ Route::get('/supervisor-dashboard', [SupervisorDashboardController::class, 'inde
 
 // Protect routes with authentication middleware
 Route::middleware('role:customer')->group(function () {
-        // Route to show tickets
-Route::get('/customer-dashboard/tickets', [CustomerDashboardController::class, 'showTickets'])->name('customer.tickets');
+    Route::get('/customer/profile', [CustomerDashboardController::class, 'showProfile'])->name('customer.profile');
+    Route::get('/customer/profile/edit', [CustomerDashboardController::class, 'editProfile'])->name('customer.profile.edit');
+    // Route to update the profile
+    Route::put('/customer/profile/update', [CustomerDashboardController::class, 'updateProfile'])->name('customer.profile.update');
 
-Route::get('/customer/ticket/create', [CustomerDashboardController::class, 'createTicket'])->name('ticket.create');
-Route::post('/customer/ticket/store', [CustomerDashboardController::class, 'storeTicket'])->name('ticket.store');
-Route::get('/customer/ticket/{ticketId}', [CustomerDashboardController::class, 'showTicketDetails'])->name('ticket.details');
+    // Route to show tickets
+    Route::get('/customer-dashboard/tickets', [CustomerDashboardController::class, 'showTickets'])->name('customer.tickets');
+
+    Route::get('/customer/ticket/create', [CustomerDashboardController::class, 'createTicket'])->name('ticket.create');
+    Route::post('/customer/ticket/store', [CustomerDashboardController::class, 'storeTicket'])->name('ticket.store');
+    Route::get('/customer/ticket/{ticketId}', [CustomerDashboardController::class, 'showTicketDetails'])->name('ticket.details');
 });

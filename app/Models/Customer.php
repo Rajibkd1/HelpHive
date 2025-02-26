@@ -12,31 +12,39 @@ class Customer extends Authenticatable
     use HasFactory;
 
     protected $fillable = [
-        'name', 'email', 'password', 'address', 'gender', 'dob', 'mobile_number'
+        'name',
+        'email',
+        'password',
+        'address',
+        'profile_picture',
+        'gender',
+        'dob',
+        'mobile_number'
     ];
 
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
+        'remember_token',
     ];
 
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-     // Method to check the user credentials
-     public function getAuthIdentifierName()
-     {
-         return 'email'; // Use email as the identifier
-     }
- 
-     public function getAuthIdentifier()
-     {
-         return $this->email;
-     }
- 
-     public function getAuthPassword()
-     {
-         return $this->password;
-     }
+    // Method to check the user credentials
+    public function getAuthIdentifierName()
+    {
+        return 'email'; // Use email as the identifier
+    }
+
+    public function getAuthIdentifier()
+    {
+        return $this->email;
+    }
+
+    public function getAuthPassword()
+    {
+        return $this->password;
+    }
 
     // Relationship: A customer can have many tickets
     public function tickets()

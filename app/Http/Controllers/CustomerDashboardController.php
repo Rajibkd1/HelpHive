@@ -8,16 +8,130 @@ use App\Models\Department;
 use App\Models\Ticket;
 use App\Models\Upload;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CustomerDashboardController extends Controller
 {
-    // Apply the 'role:customer' middleware to this controller method
+
+
     public function index()
     {
-        $user = session('user'); // Retrieve the user data from session
-        return view('customer.customer-dashboard', compact('user')); // Ensure view name matches file path
+
+        // Get the user from the session
+        $user = session('user');
+
+        // Get the count of created tickets
+        $createdTicketsCount = Ticket::where('customer_id', $user->id)->count();
+
+        // Get the count of tickets by status
+        $openTickets = Ticket::where('customer_id', $user->id)->where('status', 'open')->count();
+        $inProgressTickets = Ticket::where('customer_id', $user->id)->where('status', 'in-progress')->count();
+        $resolvedTickets = Ticket::where('customer_id', $user->id)->where('status', 'resolved')->count();
+        $closedTickets = Ticket::where('customer_id', $user->id)->where('status', 'closed')->count();
+
+        // Get ticket creation statistics for graph (per month)
+        // Get ticket creation statistics for graph (per month)
+        $monthlyTickets = Ticket::selectRaw('MONTH(created_at) as month, count(*) as count')
+            ->where('customer_id', $user->id)
+            ->whereNotNull('created_at')  // Exclude tickets with NULL created_at
+            ->whereYear('created_at', now()->year)  // Filter tickets by the current year
+            ->whereMonth('created_at', now()->month)  // Filter tickets by the current month
+            ->groupBy('month')
+            ->pluck('count', 'month')
+            ->toArray(); // Ensure this is always an array
+
+        // Ensure all months are represented (even if no tickets for some months)
+        $monthlyTickets = array_merge(array_fill(1, 12, 0), $monthlyTickets);
+
+
+
+
+
+        // Return the view with data
+        return view('customer.customer-dashboard', compact(
+            'createdTicketsCount',
+            'openTickets',
+            'inProgressTickets',
+            'resolvedTickets',
+            'closedTickets',
+            'monthlyTickets' // Contains the current month's ticket count
+        ));
     }
-    // CustomerDashboardController.php
+
+    // // Apply the 'role:customer' middleware to this controller method
+    // public function index()
+    // {
+    //     $user = session('user'); // Retrieve the user data from session
+    //     return view('customer.customer-dashboard', compact('user')); // Ensure view name matches file path
+    // }
+    // // CustomerDashboardController.php
+
+
+    public function showProfile()
+    {
+        $user = session('user');  // Retrieve the user data from session
+
+        return view('customer.profile', compact('user'));  // Pass the user data to the profile view
+    }
+
+    public function editProfile()
+    {
+        $user = session('user');
+        return view('customer.profile-edit', compact('user'));
+    }
+
+    public function updateProfile(Request $request)
+    {
+        // Ensure the user is logged in
+        $user = session('user');
+
+
+        if (!$user) {
+            // Redirect to login if the user is not authenticated
+            return redirect()->route('login')->with('error', 'Please log in to update your profile');
+        }
+
+        // Validate the input
+        $validated = $request->validate([
+            'address' => 'nullable|string|max:255',
+            'profile_picture' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
+            'gender' => 'nullable|string|max:255',
+            'dob' => 'nullable|date',
+            'mobile_number' => 'nullable|string|max:255',
+        ]);
+
+        // Update the editable fields
+        $user->address = $request->address;
+        $user->gender = $request->gender;
+        $user->dob = $request->dob;
+        $user->mobile_number = $request->mobile_number;
+
+        // Handle profile picture upload if present
+        if ($request->hasFile('profile_picture')) {
+            // Get the uploaded profile picture
+            $file = $request->file('profile_picture');
+            $filename = $file->getClientOriginalName();
+            $path = $file->storeAs('public/uploads', $filename);
+
+            // Delete the old profile picture if it exists
+            if ($user->profile_picture) {
+                Storage::delete('public/' . $user->profile_picture);
+            }
+            // Update the user's profile picture path
+            $user->profile_picture = str_replace('public/', '', $path);  // Store the relative path 'profile_pictures/filename'
+
+            // Save the updated user information
+            $user->save();
+        }
+        // Optionally, update the session with the new user data
+        session(['user' => $user]);
+
+        // Redirect to the profile page with success message
+        return redirect()->route('customer.profile')->with('success', 'Profile updated successfully!');
+    }
+
+
+
 
 
     public function showTickets()

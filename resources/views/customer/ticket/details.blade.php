@@ -1,12 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('customer.sidebar')
+
+@section('sidebar-content')
+
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ticket Details</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -30,7 +27,7 @@
 
 <body class="bg-gray-50">
 
-    <div class="max-w-6xl mx-auto p-4 sm:p-6 lg:p-8">
+    <div class="max-w-6xl mx-auto  p-4 sm:p-6 mt-12 lg:p-8">
 
         <!-- Header -->
         <div class="flex justify-between items-center mb-8">
@@ -59,6 +56,13 @@
                         <span class="text-sm text-gray-500">{{ $ticket->created_at->format('m/d/Y H:i') }}</span>
                         <button class="text-blue-500 hover:text-blue-600 text-sm font-medium" id="replyButton">Reply</button>
                     </div>
+                </div>
+
+                <div class="text-black-600 text-2xl">
+                    {{ $ticket->title }}
+                </div>
+                <div class="text-gray-600">
+                    {{ $ticket->description }}
                 </div>
         
                 <!-- Show Attachments (if any) -->
@@ -89,9 +93,7 @@
                 </div>
                 @endif
         
-                <div class="text-gray-600">
-                    {{ $ticket->description }}
-                </div>
+                
             </div>
         
         </div>
@@ -232,4 +234,4 @@
     </script>
 </body>
 
-</html>
+@endsection
