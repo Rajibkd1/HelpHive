@@ -136,20 +136,20 @@ class CustomerDashboardController extends Controller
 
     public function showTickets()
     {
-        // Retrieve the logged-in user from the session
-        $user = session('user');
+        $user = session('user');  // Retrieve the logged-in user from the session
 
-        // Check if user exists in the session
+        // Ensure the user is logged in
         if (!$user) {
             return redirect()->route('login')->withErrors(['email' => 'Please log in to view your tickets.']);
         }
 
         // Fetch tickets related to the logged-in user (customer_id) and paginate
-        $tickets = Ticket::where('customer_id', $user->id)->paginate(7);  // Paginate 7 tickets per page
+        $tickets = Ticket::where('customer_id', $user->id)->paginate(7);
 
-        // Return the view with the tickets
+        // Pass the tickets to the view
         return view('customer.tickets', compact('tickets'));
     }
+
 
     public function showTicketDetails($ticketId)
     {

@@ -8,6 +8,7 @@ use App\Models\Customer;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\OTPController;
+use App\Http\Controllers\SupervisorController;
 use App\Http\Controllers\SupervisorDashboardController;
 
 Route::get('/auth', [AuthController::class, 'showAuthForm'])->name('auth');
@@ -34,10 +35,6 @@ Route::get('/agent-dashboard', [AgentDashboardController::class, 'index'])
     ->middleware('role:agent')
     ->name('agent.dashboard');  // Apply role middleware for agents and add name
 
-// Supervisor dashboard route
-Route::get('/supervisor-dashboard', [SupervisorDashboardController::class, 'index'])
-    ->middleware('role:supervisor')
-    ->name('supervisor.dashboard');  // Apply role middleware for supervisors and add name
 
 // Protect routes with authentication middleware
 Route::middleware('role:customer')->group(function () {
@@ -52,4 +49,26 @@ Route::middleware('role:customer')->group(function () {
     Route::get('/customer/ticket/create', [CustomerDashboardController::class, 'createTicket'])->name('ticket.create');
     Route::post('/customer/ticket/store', [CustomerDashboardController::class, 'storeTicket'])->name('ticket.store');
     Route::get('/customer/ticket/{ticketId}', [CustomerDashboardController::class, 'showTicketDetails'])->name('ticket.details');
+});
+
+
+// Protect routes with authentication middleware
+Route::middleware('role:supervisor')->group(function () {
+    Route::get('/supervisor-dashboard', [SupervisorController::class, 'dashboard'])->name('supervisor.dashboard');
+    Route::get('tickets', [SupervisorController::class, 'showAllTickets'])->name('tickets');
+    Route::patch('/ticket/{ticket}/update-priority', [SupervisorController::class, 'updatePriority'])->name('ticket.update.priority');
+
+    Route::patch('/ticket/{ticket}/update-assign', [SupervisorController::class, 'updateAssign'])->name('ticket.update.assign');
+    // Route to view ticket details
+Route::get('/ticket/{ticket}', [SupervisorController::class, 'showTicketDetails'])->name('ticket.details');
+
+    Route::get('canned-replies', [SupervisorController::class, 'cannedReplies'])->name('canned-replies');
+    Route::get('departments', [SupervisorController::class, 'departments'])->name('departments');
+    Route::get('labels', [SupervisorController::class, 'labels'])->name('labels');
+    Route::get('statuses', [SupervisorController::class, 'statuses'])->name('statuses');
+    Route::get('priorities', [SupervisorController::class, 'priorities'])->name('priorities');
+    Route::get('users', [SupervisorController::class, 'users'])->name('users');
+    Route::get('user-roles', [SupervisorController::class, 'userRoles'])->name('user-roles');
+    Route::get('settings', [SupervisorController::class, 'settings'])->name('settings');
+    Route::get('translations', [SupervisorController::class, 'translations'])->name('translations');
 });

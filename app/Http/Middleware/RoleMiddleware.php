@@ -13,7 +13,7 @@ class RoleMiddleware
     {
         // Check if the user role in the session matches the required role
         if (session('role') !== $role) {
-            return redirect()->route('auth'); // Redirect if the role doesn't match
+            return redirect()->route('login'); // Redirect if the role doesn't match
         }
 
         return $next($request); // Allow the request to proceed if the role matches
