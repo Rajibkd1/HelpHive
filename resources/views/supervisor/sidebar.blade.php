@@ -118,7 +118,7 @@
 
                 <!-- Administration Section -->
                 <li>
-                    <a href="#" class="sidebar-item flex items-center gap-4 px-4 py-2 text-slate-300 hover:bg-slate-700 rounded-md" onclick="selectItem(event)">
+                    <a href="{{ route('departments.index') }}" class="sidebar-item flex items-center gap-4 px-4 py-2 text-slate-300 hover:bg-slate-700 rounded-md" onclick="selectItem(event)">
                         <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 3v18M18 3v18M6 9h12m-12 6h12"/>
                         </svg>   

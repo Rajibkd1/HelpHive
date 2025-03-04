@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Agent;
+use App\Models\Department;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -136,8 +137,55 @@ class SupervisorController extends Controller
         return view('supervisor.priority_tickets_details', compact('tickets', 'priority', 'agents'));
     }
 
+    public function showDepartments()
+    {
+        // Get all departments with pagination
+        $departments = Department::paginate(10);
+        return view('supervisor.departments.index', compact('departments'));
+    }
 
+    // Show the form to create a new department
+    public function createDepartment()
+    {
+        return view('supervisor.departments.create');
+    }
 
+    // Store a new department
+    public function storeDepartment(Request $request)
+    {
+        // Validate the form data
+        $request->validate([
+            'name' => 'required|unique:departments,name|max:255',
+        ]);
+
+        // Create a new department
+        Department::create([
+            'name' => $request->name,
+        ]);
+
+        // Redirect back to department list with success message
+        return redirect()->route('departments.index')->with('success', 'Department created successfully!');
+    }
+
+    // Show the form to edit a department
+    public function editDepartment(Department $department)
+    {
+        return view('supervisor.departments.edit', compact('department'));
+    }
+
+    // Update a department
+    public function updateDepartment(Request $request, Department $department)
+    {
+        $request->validate([
+            'name' => 'required|unique:departments,name,' . $department->id . '|max:255',
+        ]);
+
+        $department->update([
+            'name' => $request->name,
+        ]);
+
+        return redirect()->route('departments.index')->with('success', 'Department updated successfully!');
+    }
 
     public function cannedReplies()
     {
@@ -145,11 +193,6 @@ class SupervisorController extends Controller
         return view('supervisor.canned_replies');
     }
 
-    public function departments()
-    {
-        // Return the view for departments
-        return view('supervisor.departments');
-    }
 
     public function labels()
     {

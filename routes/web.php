@@ -81,7 +81,20 @@ Route::get('create-agent', [AgentController::class, 'create'])->name('create.age
 // Store the new agent
 Route::post('create-agent', [AgentController::class, 'store'])->name('store.agent');
 
-    Route::get('departments', [SupervisorController::class, 'departments'])->name('departments');
+// Show list of departments
+Route::get('departments', [SupervisorController::class, 'showDepartments'])->name('departments.index');
+
+// Create a new department (Form)
+Route::get('departments/create', [SupervisorController::class, 'createDepartment'])->name('departments.create');
+
+// Store the newly created department
+Route::post('departments', [SupervisorController::class, 'storeDepartment'])->name('departments.store');
+// Show the edit form for a department
+Route::get('departments/{department}/edit', [SupervisorController::class, 'editDepartment'])->name('departments.edit');
+
+// Update the department
+Route::put('departments/{department}', [SupervisorController::class, 'updateDepartment'])->name('departments.update');
+
     Route::get('labels', [SupervisorController::class, 'labels'])->name('labels');
     Route::get('statuses', [SupervisorController::class, 'statuses'])->name('statuses');
     Route::get('priorities', [SupervisorController::class, 'priorities'])->name('priorities');
