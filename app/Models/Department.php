@@ -15,4 +15,8 @@ class Department extends Model
     {
         return $this->hasMany(Ticket::class);
     }
+    public function agents()
+    {
+        return $this->hasMany(Agent::class);
+    }
 }

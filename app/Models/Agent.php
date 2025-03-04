@@ -15,7 +15,8 @@ class Agent extends Authenticatable
         'name',
         'email',
         'password',
-        'supervisor_id'
+        'supervisor_id',
+        'department_id'
     ];
 
     protected $hidden = [
@@ -56,5 +57,9 @@ class Agent extends Authenticatable
     public function supervisor()
     {
         return $this->belongsTo(Supervisor::class);
+    }
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
     }
 }

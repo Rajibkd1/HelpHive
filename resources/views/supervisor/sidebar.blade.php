@@ -116,16 +116,6 @@
                     </a>
                 </li>
 
-                <!-- Canned Replies Section -->
-                <li>
-                    <a href="#" class="sidebar-item flex items-center gap-4 px-4 py-2 text-slate-300 hover:bg-slate-700 rounded-md" onclick="selectItem(event)">
-                        <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
-                        </svg>
-                        <span>Canned Replies</span>
-                    </a>
-                </li>
-
                 <!-- Administration Section -->
                 <li>
                     <a href="#" class="sidebar-item flex items-center gap-4 px-4 py-2 text-slate-300 hover:bg-slate-700 rounded-md" onclick="selectItem(event)">
@@ -145,7 +135,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="sidebar-item flex items-center gap-4 px-4 py-2 text-slate-300 hover:bg-slate-700 rounded-md" onclick="selectItem(event)">
+                    <a href="{{ route('statuses') }}" class="sidebar-item flex items-center gap-4 px-4 py-2 text-slate-300 hover:bg-slate-700 rounded-md" onclick="selectItem(event)">
                         <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="2" fill="none"/>
                         </svg>                        
@@ -153,7 +143,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="sidebar-item flex items-center gap-4 px-4 py-2 text-slate-300 hover:bg-slate-700 rounded-md" onclick="selectItem(event)">
+                    <a href="{{ route('priorities') }}" class="sidebar-item flex items-center gap-4 px-4 py-2 text-slate-300 hover:bg-slate-700 rounded-md" onclick="selectItem(event)">
                         <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h0M12 8c2 0 4 2 4 4"/>
                         </svg>
@@ -162,7 +152,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="sidebar-item flex items-center gap-4 px-4 py-2 text-slate-300 hover:bg-slate-700 rounded-md" onclick="selectItem(event)">
+                    <a href="{{ route('agents.index') }}" class="sidebar-item flex items-center gap-4 px-4 py-2 text-slate-300 hover:bg-slate-700 rounded-md" onclick="selectItem(event)">
                         <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 9V5a2 2 0 112 0v4a2 2 0 11-2 0zm8 0V5a2 2 0 112 0v4a2 2 0 11-2 0z"></path>
                         </svg>

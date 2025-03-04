@@ -53,7 +53,6 @@
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Priority</th>
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Assigned To</th>
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
@@ -65,7 +64,7 @@
                         @foreach ($tickets as $index => $ticket)
                             <tr class="hover:bg-gray-50 cursor-pointer">
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $tickets->firstItem() + $index }}</td> <!-- Serial number -->
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $ticket->title }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900" onclick="window.location='{{ route('ticket.details', $ticket->id) }}'">{{ $ticket->title }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $ticket->created_at->format('m/d/Y') }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $ticket->department->name }}</td> <!-- Department -->
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -98,9 +97,6 @@
                                         {{ ucfirst($ticket->status) }}
                                     </span>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <a href="{{ route('ticket.details', $ticket->id) }}" class="text-blue-500">View</a>
-                                </td>
                             </tr>
                         @endforeach
                     @endif
@@ -119,10 +115,6 @@
         </div>
 
     </div>
-
-    <script>
-        // The onclick functionality for redirecting to ticket details is handled within the loop
-    </script>
 
 </body>
 

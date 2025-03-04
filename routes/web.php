@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AgentController;
 use App\Http\Controllers\AgentDashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -60,9 +61,26 @@ Route::middleware('role:supervisor')->group(function () {
 
     Route::patch('/ticket/{ticket}/update-assign', [SupervisorController::class, 'updateAssign'])->name('ticket.update.assign');
     // Route to view ticket details
-Route::get('/ticket/{ticket}', [SupervisorController::class, 'showTicketDetails'])->name('ticket.details');
+    Route::get('/ticket/{ticket}', [SupervisorController::class, 'showTicketDetails'])->name('ticket.details');
 
-    Route::get('canned-replies', [SupervisorController::class, 'cannedReplies'])->name('canned-replies');
+    Route::get('/statuses', [SupervisorController::class, 'statuses'])->name('statuses');
+
+    // Route to display tickets by a specific status
+    Route::get('/statuses/{status}', [SupervisorController::class, 'showTicketsByStatus'])->name('status.tickets');
+
+    // Route for showing the priority overview page
+    Route::get('/priorities', [SupervisorController::class, 'showPriorities'])->name('priorities');
+    // Route for showing tickets filtered by priority
+    Route::get('/tickets/priority/{priority}', [SupervisorController::class, 'showTicketsByPriority'])->name('priority.tickets');
+
+    Route::get('/agents', [AgentController::class, 'index'])->name('agents.index');
+
+    // Show the 'Add New Agent' form
+Route::get('create-agent', [AgentController::class, 'create'])->name('create.agent');
+
+// Store the new agent
+Route::post('create-agent', [AgentController::class, 'store'])->name('store.agent');
+
     Route::get('departments', [SupervisorController::class, 'departments'])->name('departments');
     Route::get('labels', [SupervisorController::class, 'labels'])->name('labels');
     Route::get('statuses', [SupervisorController::class, 'statuses'])->name('statuses');

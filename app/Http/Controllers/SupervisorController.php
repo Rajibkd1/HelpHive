@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Agent;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 
 class SupervisorController extends Controller
 {
@@ -76,6 +78,65 @@ class SupervisorController extends Controller
     }
 
 
+    public function statuses()
+    {
+        // Get the count for each status
+        $statusCounts = [
+            'open' => Ticket::where('status', 'open')->count(),
+            'in-progress' => Ticket::where('status', 'in-progress')->count(),
+            'resolved' => Ticket::where('status', 'resolved')->count(),
+            'closed' => Ticket::where('status', 'closed')->count(),
+        ];
+
+        // Pass the status counts to the view
+        return view('supervisor.statuses', compact('statusCounts'));
+    }
+
+
+    // Method to display tickets by status
+    public function showTicketsByStatus($status)
+    {
+        $tickets = Ticket::where('status', $status)->paginate(7);
+        $agents = Agent::all();
+
+        return view('supervisor.status_tickets', compact('tickets', 'status', 'agents'));
+    }
+
+
+    public function priorities()
+    {
+        // Define all possible priorities
+        $priorities = ['low', 'medium', 'high'];
+
+        // Get the count of tickets for each priority
+        $priorityCounts = [];
+        foreach ($priorities as $priority) {
+            $count = Ticket::where('priority', $priority)->count();
+            $priorityCounts[] = ['priority' => $priority, 'count' => $count];
+        }
+
+        // Pass the priority counts to the view
+        return view('supervisor.priority_tickets', compact('priorityCounts'));
+    }
+
+    public function showTicketsByPriority($priority)
+    {
+        // Validate the priority to avoid invalid values
+        $validPriorities = ['low', 'medium', 'high'];
+        if (!in_array($priority, $validPriorities)) {
+            abort(404);
+        }
+
+        // Fetch tickets based on the selected priority
+        $tickets = Ticket::where('priority', $priority)->paginate(7);
+
+        $agents = Agent::all();
+
+        // Pass the tickets and the priority to the view
+        return view('supervisor.priority_tickets_details', compact('tickets', 'priority', 'agents'));
+    }
+
+
 
 
     public function cannedReplies()
@@ -94,18 +155,6 @@ class SupervisorController extends Controller
     {
         // Return the view for labels
         return view('supervisor.labels');
-    }
-
-    public function statuses()
-    {
-        // Return the view for statuses
-        return view('supervisor.statuses');
-    }
-
-    public function priorities()
-    {
-        // Return the view for priorities
-        return view('supervisor.priorities');
     }
 
     public function users()
