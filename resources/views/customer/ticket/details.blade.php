@@ -44,8 +44,9 @@
             <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
                 <div class="flex justify-between items-start mb-4">
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-lg bg-purple-700 flex items-center justify-center text-white font-medium">
-                            C
+                        <div class="w-12 h-12 rounded-full bg-purple-700 flex items-center justify-center text-white font-medium border-2 border-gray-300">
+                            <img src="{{ session('user')->profile_picture ? asset('storage/' . session('user')->profile_picture) : asset('default.png') }}"
+                            alt="Profile" class="w-full h-full object-cover rounded-full">
                         </div>
                         <div>
                             <h3 class="font-semibold text-gray-900">Customer</h3>
@@ -152,11 +153,6 @@
                     Send reply
                 </button>
             </div>
-        </div>
-
-        <!-- Show reply editor when reply button clicked -->
-        <div class="mt-6">
-            <button id="replyButton" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md">Reply</button>
         </div>
     </div>
 

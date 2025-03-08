@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\OTPController;
 use App\Http\Controllers\SupervisorController;
-use App\Http\Controllers\SupervisorDashboardController;
 
 Route::get('/auth', [AuthController::class, 'showAuthForm'])->name('auth');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
@@ -30,13 +29,6 @@ Route::get('/customer-dashboard', [CustomerDashboardController::class, 'index'])
     ->name('customer.dashboard');  // Apply role middleware for customers and add name
 
 
-
-// Agent dashboard route
-Route::get('/agent-dashboard', [AgentDashboardController::class, 'index'])
-    ->middleware('role:agent')
-    ->name('agent.dashboard');  // Apply role middleware for agents and add name
-
-
 // Protect routes with authentication middleware
 Route::middleware('role:customer')->group(function () {
     Route::get('/customer/profile', [CustomerDashboardController::class, 'showProfile'])->name('customer.profile');
@@ -46,10 +38,10 @@ Route::middleware('role:customer')->group(function () {
 
     // Route to show tickets
     Route::get('/customer-dashboard/tickets', [CustomerDashboardController::class, 'showTickets'])->name('customer.tickets');
+    Route::get('/customer-dashboard/ticket/{ticketId}', [CustomerDashboardController::class, 'showTicketDetails'])->name('cus-ticket.details');
 
     Route::get('/customer/ticket/create', [CustomerDashboardController::class, 'createTicket'])->name('ticket.create');
     Route::post('/customer/ticket/store', [CustomerDashboardController::class, 'storeTicket'])->name('ticket.store');
-    Route::get('/customer/ticket/{ticketId}', [CustomerDashboardController::class, 'showTicketDetails'])->name('ticket.details');
 });
 
 
@@ -73,7 +65,7 @@ Route::middleware('role:supervisor')->group(function () {
     // Route for showing tickets filtered by priority
     Route::get('/tickets/priority/{priority}', [SupervisorController::class, 'showTicketsByPriority'])->name('priority.tickets');
 
-    Route::get('/agents', [AgentController::class, 'index'])->name('agents.index');
+    Route::get('/agents', [AgentController::class, 'agentlist'])->name('agents.index');
 
     // Show the 'Add New Agent' form
 Route::get('create-agent', [AgentController::class, 'create'])->name('create.agent');
@@ -102,4 +94,11 @@ Route::put('departments/{department}', [SupervisorController::class, 'updateDepa
     Route::get('user-roles', [SupervisorController::class, 'userRoles'])->name('user-roles');
     Route::get('settings', [SupervisorController::class, 'settings'])->name('settings');
     Route::get('translations', [SupervisorController::class, 'translations'])->name('translations');
+});
+
+
+Route::middleware('role:agent')->group(function () {
+    Route::get('/agent/dashboard', [AgentController::class, 'index'])->name('agent.dashboard');
+    Route::get('/agent/tickets', [AgentController::class, 'showTickets'])->name('agent.tickets-show');
+
 });

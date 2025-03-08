@@ -10,7 +10,6 @@ class Department extends Model
 
     protected $fillable = ['name'];
 
-    // Define the relationship with the tickets table (optional, if you want to use Eloquent relationships)
     public function tickets()
     {
         return $this->hasMany(Ticket::class);

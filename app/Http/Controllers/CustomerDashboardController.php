@@ -16,21 +16,15 @@ class CustomerDashboardController extends Controller
 
     public function index()
     {
-
-        // Get the user from the session
         $user = session('user');
 
-        // Get the count of created tickets
         $createdTicketsCount = Ticket::where('customer_id', $user->id)->count();
 
-        // Get the count of tickets by status
         $openTickets = Ticket::where('customer_id', $user->id)->where('status', 'open')->count();
         $inProgressTickets = Ticket::where('customer_id', $user->id)->where('status', 'in-progress')->count();
         $resolvedTickets = Ticket::where('customer_id', $user->id)->where('status', 'resolved')->count();
         $closedTickets = Ticket::where('customer_id', $user->id)->where('status', 'closed')->count();
 
-        // Get ticket creation statistics for graph (per month)
-        // Get ticket creation statistics for graph (per month)
         $monthlyTickets = Ticket::selectRaw('MONTH(created_at) as month, count(*) as count')
             ->where('customer_id', $user->id)
             ->whereNotNull('created_at')  // Exclude tickets with NULL created_at
@@ -57,7 +51,6 @@ class CustomerDashboardController extends Controller
             'monthlyTickets' // Contains the current month's ticket count
         ));
     }
-
     // // Apply the 'role:customer' middleware to this controller method
     // public function index()
     // {
@@ -106,27 +99,20 @@ class CustomerDashboardController extends Controller
         $user->dob = $request->dob;
         $user->mobile_number = $request->mobile_number;
 
-        // Handle profile picture upload if present
         if ($request->hasFile('profile_picture')) {
-            // Get the uploaded profile picture
             $file = $request->file('profile_picture');
             $filename = $file->getClientOriginalName();
             $path = $file->storeAs('public/uploads', $filename);
 
-            // Delete the old profile picture if it exists
             if ($user->profile_picture) {
                 Storage::delete('public/' . $user->profile_picture);
             }
-            // Update the user's profile picture path
             $user->profile_picture = str_replace('public/', '', $path);  // Store the relative path 'profile_pictures/filename'
 
-            // Save the updated user information
             $user->save();
         }
-        // Optionally, update the session with the new user data
         session(['user' => $user]);
 
-        // Redirect to the profile page with success message
         return redirect()->route('customer.profile')->with('success', 'Profile updated successfully!');
     }
 
@@ -136,41 +122,31 @@ class CustomerDashboardController extends Controller
 
     public function showTickets()
     {
-        $user = session('user');  // Retrieve the logged-in user from the session
+        $user = session('user');  
 
-        // Ensure the user is logged in
         if (!$user) {
             return redirect()->route('login')->withErrors(['email' => 'Please log in to view your tickets.']);
         }
 
-        // Fetch tickets related to the logged-in user (customer_id) and paginate
         $tickets = Ticket::where('customer_id', $user->id)->paginate(7);
 
-        // Pass the tickets to the view
         return view('customer.tickets', compact('tickets'));
     }
 
 
     public function showTicketDetails($ticketId)
     {
-        // Retrieve the logged-in user from session
         $user = session('user');
 
-        // Get the ticket by ID
-        $ticket = Ticket::with(['responses', 'uploads'])->findOrFail($ticketId); // Eager load responses and uploads
+        $ticket = Ticket::with(['responses', 'uploads'])->findOrFail($ticketId); 
 
-        // Return the ticket details view
         return view('customer.ticket.details', compact('ticket', 'user'));
     }
 
 
-    // Method to show the ticket creation form
     public function createTicket()
     {
-        // Fetch all departments for the dropdown
         $departments = Department::all();
-
-        // Return the ticket creation view with departments data
         return view('customer.ticket.create', compact('departments'));
     }
 
@@ -185,10 +161,8 @@ class CustomerDashboardController extends Controller
             'file' => 'nullable|mimes:jpg,png,pdf,doc,docx,txt|max:10240', // Validate file type and size
         ]);
 
-        // Retrieve the logged-in user from the session
         $user = session('user'); // This will give you the user object stored in the session
 
-        // Check if the user exists in the session
         if (!$user) {
             return redirect()->route('login')->withErrors(['email' => 'Please log in to create a ticket.']);
         }

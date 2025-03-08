@@ -1,16 +1,11 @@
-@extends('customer.sidebar')
+@extends('agent.sidebar')
 
 @section('sidebar-content')
-<body class="bg-gray-50 p-6">
-    <div class="max-w-7xl mx-auto">
 
-        <!-- Header -->
-        <div class="flex justify-between items-center mb-6">
-            <h1 class="text-2xl font-semibold text-gray-900">My tickets</h1>
-            <a href="{{ route('ticket.create') }}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium">
-                New ticket
-            </a>
-        </div>
+<body class="bg-gray-50 p-6">
+
+    <div class="max-w-7xl mx-auto">
+        <h1 class="text-2xl font-semibold text-gray-900 mb-6">Agent Dashboard</h1>
 
         <!-- Search and Filters -->
         <div class="bg-white p-4 rounded-lg shadow-sm mb-4 flex flex-wrap gap-4">
@@ -22,6 +17,7 @@
                 </div>
                 <input type="search" placeholder="Search" class="pl-10 pr-4 py-2 w-full border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500">
             </div>
+
             <div class="flex gap-4">
                 <select class="border rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500">
                     <option>All requests</option>
@@ -47,22 +43,24 @@
                 <thead class="bg-gray-50">
                     <tr>
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subject</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created at</th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Updated at</th>
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
                     @if($tickets->isEmpty())
                         <tr>
-                            <td colspan="4" class="text-center py-4">No tickets found.</td>
+                            <td colspan="5" class="text-center py-4">No tickets found.</td>
                         </tr>
                     @else
                         @foreach ($tickets as $ticket)
                             <tr class="hover:bg-gray-50 cursor-pointer" onclick="window.location='{{ route('cus-ticket.details', $ticket->id) }}'">
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $ticket->title }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $ticket->customer->name }}</td> <!-- Customer Name -->
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $ticket->department->name }}</td> <!-- Department Name -->
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $ticket->created_at->format('m/d/Y') }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $ticket->updated_at->diffForHumans() }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
                                         @if($ticket->status == 'open') bg-yellow-100 text-yellow-800 
@@ -87,11 +85,8 @@
                 </div>
             </div>
         </div>
-
     </div>
 
-    <script>
-        // The onclick functionality for redirecting to ticket details is handled within the loop
-    </script>
 </body>
+
 @endsection

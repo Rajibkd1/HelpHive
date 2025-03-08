@@ -82,7 +82,7 @@
             50% { transform: scale(1.1); }
             100% { transform: scale(1); }
         }
-        
+
         .notification-badge {
             animation: pulse 2s infinite;
         }
@@ -104,50 +104,6 @@
             }
         }
     </style>
-
-    <script>
-        // Simple toggle function for mobile menu
-        function toggleMobileMenu() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('overlay');
-            sidebar.classList.toggle('-translate-x-full');
-            overlay.classList.toggle('hidden');
-        }
-
-        // Function to select an item
-        function selectItem(event) {
-            // Get all items
-            const items = document.querySelectorAll('.sidebar-item');
-            // Remove the 'selected' class from all items
-            items.forEach(item => item.classList.remove('selected'));
-            // Add the 'selected' class to the clicked item
-            event.currentTarget.classList.add('selected');
-        }
-
-        // Add ripple effect to sidebar items
-        document.addEventListener('DOMContentLoaded', function() {
-            const sidebarItems = document.querySelectorAll('.sidebar-item');
-            
-            sidebarItems.forEach(item => {
-                item.addEventListener('click', function(e) {
-                    const rect = item.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    
-                    const ripple = document.createElement('span');
-                    ripple.classList.add('ripple-effect');
-                    ripple.style.left = `${x}px`;
-                    ripple.style.top = `${y}px`;
-                    
-                    item.appendChild(ripple);
-                    
-                    setTimeout(() => {
-                        ripple.remove();
-                    }, 600);
-                });
-            });
-        });
-    </script>
 </head>
 
 <body class="bg-gray-100">
@@ -157,7 +113,7 @@
 
     <!-- Sidebar -->
     <aside id="sidebar" class="fixed inset-y-0 left-0 w-64 sidebar-gradient transform -translate-x-full lg:translate-x-0 transition-transform duration-200 ease-in-out z-30">
-        
+
         <!-- Logo Section -->
         <div class="logo-container p-4 flex justify-center items-center bg-slate-900">
             <!-- HelpHive Logo -->
@@ -171,11 +127,11 @@
                 </svg>
                 <div>
                     <h1 class="text-white text-xl font-bold">HelpHive</h1>
-                    <p class="text-emerald-400 text-xs">Supervisor Panel</p>
+                    <p class="text-emerald-400 text-xs">Agent Panel</p>
                 </div>
             </div>
         </div>
-        
+
         <!-- User Profile Section -->
         <div class="p-6 bg-slate-800 border-b border-slate-700">
             <div class="flex items-center gap-4">
@@ -187,7 +143,7 @@
                     <h2 class="text-white font-semibold">{{ session('user')->name ?? 'Guest' }}</h2>
                     <div class="flex items-center gap-1">
                         <span class="inline-block w-2 h-2 bg-emerald-500 rounded-full"></span>
-                        <p class="text-sm text-emerald-400">Supervisor</p>
+                        <p class="text-sm text-emerald-400">Agent</p>
                     </div>
                 </div>
             </div>
@@ -198,103 +154,37 @@
             <div class="text-slate-400 text-xs uppercase font-semibold mb-2 pl-4">General</div>
             <ul class="space-y-2">
                 <li>
-                    <a href="{{ route('supervisor.dashboard') }}" class="sidebar-item flex items-center gap-4 px-4 py-3 text-slate-300 hover:bg-slate-700 rounded-md group transition-all duration-200" onclick="selectItem(event)">
+                    <a href="{{ route('agent.dashboard') }}" class="sidebar-item flex items-center gap-4 px-4 py-3 text-slate-300 hover:bg-slate-700 rounded-md group transition-all duration-200" onclick="selectItem(event)">
                         <svg class="w-6 h-6 text-emerald-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
                         </svg>
                         <span>Dashboard</span>
                     </a>
                 </li>
-
                 <li>
-                    <a href="{{ route('tickets') }}" class="sidebar-item flex items-center gap-4 px-4 py-3 text-slate-300 hover:bg-slate-700 rounded-md group transition-all duration-200" onclick="selectItem(event)">
+                    <a href="{{ route('agent.tickets-show') }}" class="sidebar-item flex items-center gap-4 px-4 py-3 text-slate-300 hover:bg-slate-700 rounded-md group transition-all duration-200" onclick="selectItem(event)">
                         <svg class="w-6 h-6 text-emerald-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
                         </svg>
                         <span>Tickets</span>
                     </a>
                 </li>
-
-                <div class="my-4 border-t border-slate-700"></div>
-                <div class="text-slate-400 text-xs uppercase font-semibold mb-2 pl-4">Administration</div>
-
-                <li>
-                    <a href="{{ route('departments.index') }}" class="sidebar-item flex items-center gap-4 px-4 py-3 text-slate-300 hover:bg-slate-700 rounded-md group transition-all duration-200" onclick="selectItem(event)">
-                        <svg class="w-6 h-6 text-emerald-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 3v18M18 3v18M6 9h12m-12 6h12"/>
-                        </svg>   
-                        <span>Departments</span>
-                    </a>
-                </li>
-                
                 <li>
                     <a href="#" class="sidebar-item flex items-center gap-4 px-4 py-3 text-slate-300 hover:bg-slate-700 rounded-md group transition-all duration-200" onclick="selectItem(event)">
                         <svg class="w-6 h-6 text-emerald-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l4 4-4 4m0 0l-4 4-4-4m4-4l-4-4"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l4 4-4 4m0 0l-4 4-4-4m4-4l-4-4"></path>
                         </svg>
-                        <span>Labels</span>
+                        <span>Replies</span>
                     </a>
                 </li>
-                
-                <li>
-                    <a href="{{ route('statuses') }}" class="sidebar-item flex items-center gap-4 px-4 py-3 text-slate-300 hover:bg-slate-700 rounded-md group transition-all duration-200" onclick="selectItem(event)">
-                        <svg class="w-6 h-6 text-emerald-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="2" fill="none"/>
-                        </svg>                        
-                        <span>Statuses</span>
-                    </a>
-                </li>
-                
-                <li>
-                    <a href="{{ route('priorities') }}" class="sidebar-item flex items-center gap-4 px-4 py-3 text-slate-300 hover:bg-slate-700 rounded-md group transition-all duration-200" onclick="selectItem(event)">
-                        <svg class="w-6 h-6 text-emerald-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h0M12 8c2 0 4 2 4 4"/>
-                        </svg>
-                        <span>Priorities</span>
-                    </a>
-                </li>
-                
-                <li>
-                    <a href="{{ route('agents.index') }}" class="sidebar-item flex items-center gap-4 px-4 py-3 text-slate-300 hover:bg-slate-700 rounded-md group transition-all duration-200" onclick="selectItem(event)">
-                        <svg class="w-6 h-6 text-emerald-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 9V5a2 2 0 112 0v4a2 2 0 11-2 0zm8 0V5a2 2 0 112 0v4a2 2 0 11-2 0z"></path>
-                        </svg>
-                        <span>Users</span>
-                    </a>
-                </li>
-                
                 <li>
                     <a href="#" class="sidebar-item flex items-center gap-4 px-4 py-3 text-slate-300 hover:bg-slate-700 rounded-md group transition-all duration-200" onclick="selectItem(event)">
                         <svg class="w-6 h-6 text-emerald-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v12"></path>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 12h12"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v12m0 0H6m6 0h6"></path>
                         </svg>
-                        <span>User Roles</span>
+                        <span>Help Center</span>
                     </a>
                 </li>
-
-                <div class="my-4 border-t border-slate-700"></div>
-                <div class="text-slate-400 text-xs uppercase font-semibold mb-2 pl-4">Settings</div>
-                
-                <li>
-                    <a href="#" class="sidebar-item flex items-center gap-4 px-4 py-3 text-slate-300 hover:bg-slate-700 rounded-md group transition-all duration-200" onclick="selectItem(event)">
-                        <svg class="w-6 h-6 text-emerald-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                        </svg>
-                        <span>Settings</span>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="#" class="sidebar-item flex items-center gap-4 px-4 py-3 text-slate-300 hover:bg-slate-700 rounded-md group transition-all duration-200" onclick="selectItem(event)">
-                        <svg class="w-6 h-6 text-emerald-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12m0 0h3M3 5v13m15-13v13"></path>
-                        </svg>
-                        <span>Translations</span>
-                    </a>
-                </li>
-                
                 <li>
                     <a href="{{ route('logout') }}" class="sidebar-item flex items-center gap-4 px-4 py-3 text-slate-300 hover:bg-red-700 rounded-md group transition-all duration-200" onclick="selectItem(event)">
                         <svg class="w-6 h-6 text-red-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -305,7 +195,7 @@
                 </li>
             </ul>
         </nav>
-        
+
         <!-- Sidebar Footer -->
         <div class="absolute bottom-0 w-full p-4 bg-slate-900 border-t border-slate-700">
             <div class="flex items-center justify-between">
@@ -324,14 +214,15 @@
                 </div>
             </div>
         </div>
-
     </aside>
 
     <!-- Main Content -->
     <div class="lg:pl-64 min-h-screen">
+
         <!-- Header -->
         <header class="bg-white border-b h-16 fixed top-0 right-0 left-0 lg:left-64 z-10">
             <div class="flex items-center justify-between h-full px-4">
+
                 <!-- Mobile menu button -->
                 <button onclick="toggleMobileMenu()" class="lg:hidden p-2 rounded-md hover:bg-gray-100">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -353,15 +244,13 @@
 
                 <!-- Right side icons -->
                 <div class="flex items-center gap-4">
-                    <span class="hidden lg:block text-sm text-gray-600">Welcome to Supervisor Dashboard</span>
-
+                    <span class="hidden lg:block text-sm text-gray-600">Welcome to Agent Dashboard</span>
                     <a href="#" class="relative p-2 hover:bg-gray-100 rounded-full transition-all">
                         <span class="notification-badge absolute top-0 right-0 h-4 w-4 bg-red-500 text-xs text-white rounded-full flex items-center justify-center">5</span>
                         <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
                         </svg>
                     </a>
-
                     <a href="#" class="relative p-2 hover:bg-gray-100 rounded-full transition-all">
                         <span class="notification-badge absolute top-0 right-0 h-4 w-4 bg-red-500 text-xs text-white rounded-full flex items-center justify-center">3</span>
                         <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -377,6 +266,7 @@
             @yield('sidebar-content')
         </main>
     </div>
+
 </body>
 
 @endsection

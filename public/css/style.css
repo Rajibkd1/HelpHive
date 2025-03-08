@@ -52,7 +52,7 @@ body::before {
 
 .btn {
     height: 55px;         /* Increased button height */
-    padding: 0 40px;      /* Increased padding for wider button */
+    padding: 10px 20px;      /* Increased padding for wider button */
     background-color: var(--mainColor);
     border-radius: 4px;
     font-size: 16px;       /* Increased font size */
@@ -64,7 +64,8 @@ body::before {
     color: var(--white);
     letter-spacing: 1px;
     border: none;
-    margin-top: 20px;      /* Adjusted margin */
+    margin-bottom: 15px;
+    margin-top: 15px;      /* Adjusted margin */
     box-shadow: 0px 8px 24px 0 rgba(228, 10, 57, .2);
     transition: all .2s linear;
 }
@@ -133,37 +134,35 @@ input[type="checkbox"] {
     color: var(--mainColor);
 }
 
+/* Smaller Card Size */
 .card-3d-wrap {
-    position: relative;
-    width: 500px;  /* Increased width */
+    width: 400px;  /* Reduced from default size */
     max-width: 100%;
-    height: 600px;  /* Increased height */
-    margin-top: 60px;
-    transform-style: preserve-3d;
+    height: 450px; /* Reduced height */
+    position: relative;
     perspective: 800px;
-}
-
-.card-3d-wrapper {
+    margin: 0 auto;
+  }
+  
+  .card-3d-wrapper {
     width: 100%;
     height: 100%;
     position: absolute;
     top: 0;
     left: 0;
     transform-style: preserve-3d;
-    transition: all 0.6s ease-out;
-}
+    transition: all 600ms ease-out;
+  }
 
 
 .checkbox:checked~.card-3d-wrap .card-3d-wrapper {
     transform: rotateY(180deg);
 }
-
-.card-front,
-.card-back {
+.card-front, .card-back {
     width: 100%;
     height: 100%;
-    background-color: #1B1B1B;
-    background-image: url('https://i.postimg.cc/4dnZCH03/background.png');
+    background-color: #2a2b38;
+    background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/1462889/pat.svg');
     background-position: bottom center;
     background-repeat: no-repeat;
     background-size: 300%;
@@ -172,26 +171,30 @@ input[type="checkbox"] {
     left: 0;
     top: 0;
     transform-style: preserve-3d;
-}
+    backface-visibility: hidden;
+  }
+
 
 .card-back {
     transform: rotateY(180deg);
 }
 
+/* Adjust padding in center-wrap for better spacing in smaller card */
 .center-wrap {
-    position: absolute;
-    width: 100%;
-    padding: 0 35px;
-    top: 50%;
-    left: 0;
-    transform: translate3d(0, -50%, 35px) perspective(100px);
-    display: block;
-    z-index: 20;
+  width: 100%;
+  padding: 20px 25px; /* Reduced padding */
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translate3d(0, -50%, 35px) perspective(100px);
+  z-index: 20;
+  display: block;
 }
 
+
 .heading {
-    margin-bottom: 20px;
-    font-size: 24px;
+    font-size: 20px; /* Smaller font size */
+  margin-bottom: 20px; /* Reduced margin */
     text-transform: uppercase;
     color: white;
 }
@@ -214,7 +217,8 @@ input[type="checkbox"] {
 }
 
 .form-style {
-    padding: 15px 20px;  /* Increased padding */
+    padding: 10px 15px;  /* Increased padding */
+    margin-bottom: 15px;
     padding-left: 60px;   /* Adjusted padding to accommodate the icon */
     height: 55px;         /* Increased height */
     font-size: 16px;      /* Increased font size */
