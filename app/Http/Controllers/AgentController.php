@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Agent;
 use App\Models\Department;
 use App\Models\Ticket;
+use App\Models\TicketResponse;
+use App\Models\Upload;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class AgentController extends Controller
-{   
+{
     public function index()
     {
         // Get the agent's ID from the session
@@ -29,7 +31,7 @@ class AgentController extends Controller
             ->groupBy('month')
             ->pluck('count', 'month')->toArray();
 
-        
+
         $monthlyTickets = array_merge(array_fill(1, 12, 0), $monthlyTickets);
 
         // Pass the data to the view
@@ -43,7 +45,7 @@ class AgentController extends Controller
     }
 
 
-    
+
     public function showTickets()
     {
         $user = session('user');
@@ -57,6 +59,18 @@ class AgentController extends Controller
         // Pass the tickets to the view
         return view('agent.tickets', compact('tickets'));
     }
+
+    public function showTicketDetails($ticketId)
+    {
+        $ticket = Ticket::with(['department', 'customer', 'uploads', 'responses'])->findOrFail($ticketId);
+        $agents = Agent::all();  // Get all agents to show in the dropdown for reassignment
+
+        return view('agent.ticket_details', compact('ticket', 'agents'));
+    }
+
+
+
+
 
 
     public function agentlist()
@@ -81,17 +95,67 @@ class AgentController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:agents,email',
-            'password' => 'required|string|min:6|confirmed', 
+            'password' => 'required|string|min:6|confirmed',
             'department_id' => 'required|exists:departments,id',
         ]);
 
         Agent::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => bcrypt($request->password), 
+            'password' => bcrypt($request->password),
             'department_id' => $request->department_id,
         ]);
 
         return redirect()->route('agents.index')->with('success', 'Agent created successfully!');
+    }
+    public function storeReply(Request $request, Ticket $ticket)
+    {
+        // Retrieve the logged-in agent from the session
+        $user = session('user');
+        if (!$user) {
+            return redirect()->route('login')->with('error', 'You must be logged in as an agent.');
+        }
+
+        $agentId = $user->id;
+
+        // Validate the incoming request (response and optional file)
+        $request->validate([
+            'response' => 'required|string|max:10000',
+            'file' => 'nullable|file|max:10240', // Max file size: 10MB
+        ]);
+
+        // Handle file upload if present
+        $filePath = null;
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $filename = $file->getClientOriginalName();
+
+            // Store the file in the 'public/uploads' directory (relative to 'storage/app')
+            $path = $file->storeAs('public/uploads', $filename); // This will store the file in 'storage/app/public/uploads'
+
+            // Store the file path in the $filePath variable (to be saved in TicketResponse)
+            $filePath = str_replace('public/', '', $path); // Store relative path 'uploads/filename'
+        }
+
+        // Save the reply in the TicketResponse model
+        TicketResponse::create([
+            'response' => $request->input('response'),
+            'ticket_id' => $ticket->id,
+            'agent_id' => $agentId, // The logged-in agent
+            'file_path' => $filePath, // File path if a file was uploaded
+        ]);
+
+        // Optionally, update the ticket status
+        if ($request->has('status')) {
+            $ticket->update(['status' => $request->input('status')]);
+        }
+
+        // Optionally, mark the ticket as resolved if needed
+        if ($request->has('markAsResolved')) {
+            $ticket->update(['status' => 'resolved']);
+        }
+
+        // Return a response (e.g., redirect back or send a success response)
+        return redirect()->route('ticket-details-show', $ticket->id)->with('success', 'Reply sent successfully');
     }
 }

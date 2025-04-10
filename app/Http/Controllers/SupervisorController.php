@@ -71,10 +71,8 @@ class SupervisorController extends Controller
     {
         $tickets = Ticket::with('customer', 'department', 'agent')->paginate(7);
 
-        // Get the list of agents (users with the 'agent' role)
         $agents = Agent::all();
 
-        // Pass ticket and agents to the view
         return view('supervisor.ticket_details', compact('ticket', 'agents'));
     }
 

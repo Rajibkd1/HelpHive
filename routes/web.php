@@ -96,9 +96,14 @@ Route::put('departments/{department}', [SupervisorController::class, 'updateDepa
     Route::get('translations', [SupervisorController::class, 'translations'])->name('translations');
 });
 
+// Route::middleware('role:agent')->get('/ticket/{ticketId}', [AgentController::class, 'showTicketDetails'])->name('ticket-details-show');
+
 
 Route::middleware('role:agent')->group(function () {
     Route::get('/agent/dashboard', [AgentController::class, 'index'])->name('agent.dashboard');
     Route::get('/agent/tickets', [AgentController::class, 'showTickets'])->name('agent.tickets-show');
-
+ 
+    Route::get('agent/ticket/{ticketId}', [AgentController::class, 'showTicketDetails'])->name('ticket-details-show');
+    // This route handles the reply submission for the ticket
+    Route::post('agent/ticket/{ticket}/reply', [AgentController::class, 'storeReply'])->name('ticket.reply');
 });

@@ -56,23 +56,30 @@
                         </tr>
                     @else
                         @foreach ($tickets as $ticket)
-                            <tr class="hover:bg-gray-50 cursor-pointer" onclick="window.location='{{ route('cus-ticket.details', $ticket->id) }}'">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $ticket->title }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $ticket->customer->name }}</td> <!-- Customer Name -->
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $ticket->department->name }}</td> <!-- Department Name -->
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $ticket->created_at->format('m/d/Y') }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                        @if($ticket->status == 'open') bg-yellow-100 text-yellow-800 
-                                        @elseif($ticket->status == 'closed') bg-green-100 text-green-800 
-                                        @else bg-red-100 text-red-800 @endif">
-                                        {{ ucfirst($ticket->status) }}
-                                    </span>
-                                </td>
-                            </tr>
+                        <tr class="hover:bg-gray-50 cursor-pointer">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $ticket->title }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $ticket->customer->name }}</td> <!-- Customer Name -->
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $ticket->department->name }}</td> <!-- Department Name -->
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $ticket->created_at->format('m/d/Y') }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                    @if($ticket->status == 'open') bg-yellow-100 text-yellow-800 
+                                    @elseif($ticket->status == 'closed') bg-green-100 text-green-800 
+                                    @else bg-red-100 text-red-800 @endif">
+                                    {{ ucfirst($ticket->status) }}
+                                </span>
+                            </td>
+                            <!-- Add the "View" Button here -->
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <a href="{{ route('ticket-details-show', $ticket->id) }}" class="text-blue-500 hover:text-blue-700">
+                                    View
+                                </a>
+                            </td>
+                        </tr>
                         @endforeach
                     @endif
                 </tbody>
+                
             </table>
 
             <!-- Pagination -->

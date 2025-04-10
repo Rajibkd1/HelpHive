@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
 
 :root {
@@ -7,6 +6,7 @@
     --white: #FFFFFF;
     --whiteSmoke: #C4C3CA;
     --shadow: 0px 4px 8px 0 rgba(21, 21, 21, .2);
+    --gradient: linear-gradient(135deg, crimson, #ff6b6b);
 }
 
 * {
@@ -26,13 +26,15 @@ body {
     letter-spacing: 1px;
     font-weight: normal;
     background-color: var(--black);
-    background: url('./background.jpg') no-repeat center center fixed;
+    /* background: url('./background.jpg') no-repeat center center fixed; */
     background-size: cover;
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
 }
+
 body::before {
     content: '';
     position: absolute;
@@ -42,8 +44,18 @@ body::before {
     bottom: 0;
     background: url('./background.jpg') no-repeat center center fixed;
     background-size: cover;
-    opacity: 0.2; 
-    z-index: -1; /* Send it to the background */
+    opacity: 0.2;
+    z-index: -1;
+    animation: slowZoom 20s infinite alternate;
+}
+
+@keyframes slowZoom {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(1.1);
+    }
 }
 
 .text-center {
@@ -51,11 +63,11 @@ body::before {
 }
 
 .btn {
-    height: 55px;         /* Increased button height */
-    padding: 10px 20px;      /* Increased padding for wider button */
-    background-color: var(--mainColor);
-    border-radius: 4px;
-    font-size: 16px;       /* Increased font size */
+    height: 55px;
+    padding: 10px 25px;
+    background: var(--gradient);
+    border-radius: 30px;
+    font-size: 16px;
     font-weight: 600;
     text-transform: uppercase;
     display: inline-flex;
@@ -65,15 +77,32 @@ body::before {
     letter-spacing: 1px;
     border: none;
     margin-bottom: 15px;
-    margin-top: 15px;      /* Adjusted margin */
-    box-shadow: 0px 8px 24px 0 rgba(228, 10, 57, .2);
-    transition: all .2s linear;
+    margin-top: 15px;
+    box-shadow: 0px 8px 24px 0 rgba(228, 10, 57, .3);
+    transition: all .3s ease;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.2);
+    transition: all 0.4s ease;
+}
+
+.btn:hover::before {
+    left: 100%;
 }
 
 .btn:hover {
-    background-color: var(--white);
-    color: var(--mainColor);
-    box-shadow: 0 8px 24px 0 rgba(138, 140, 146, .2);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px 0 rgba(228, 10, 57, .4);
 }
 
 .form {
@@ -94,7 +123,7 @@ input[type="checkbox"] {
     width: 60px;
     height: 16px;
     border-radius: 8px;
-    background-color: var(--mainColor);
+    background: var(--gradient);
     padding: 0;
     margin: 10px auto;
     cursor: pointer;
@@ -118,6 +147,7 @@ input[type="checkbox"] {
     text-align: center;
     font-size: 24px;
     transition: all .5s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 .checkbox:checked+label::before {
@@ -128,37 +158,40 @@ input[type="checkbox"] {
     color: var(--whiteSmoke);
     margin-top: 20px;
     display: block;
+    transition: all 0.3s ease;
+    text-decoration: none;
 }
 
 .link:hover {
     color: var(--mainColor);
+    transform: translateY(-2px);
 }
 
-/* Smaller Card Size */
 .card-3d-wrap {
-    width: 400px;  /* Reduced from default size */
+    width: 400px;
     max-width: 100%;
-    height: 450px; /* Reduced height */
+    height: 450px;
     position: relative;
     perspective: 800px;
     margin: 0 auto;
-  }
-  
-  .card-3d-wrapper {
+}
+
+.card-3d-wrapper {
     width: 100%;
     height: 100%;
     position: absolute;
     top: 0;
     left: 0;
     transform-style: preserve-3d;
-    transition: all 600ms ease-out;
-  }
-
+    transition: all 800ms ease-out;
+}
 
 .checkbox:checked~.card-3d-wrap .card-3d-wrapper {
     transform: rotateY(180deg);
 }
-.card-front, .card-back {
+
+.card-front,
+.card-back {
     width: 100%;
     height: 100%;
     background-color: #2a2b38;
@@ -167,42 +200,70 @@ input[type="checkbox"] {
     background-repeat: no-repeat;
     background-size: 300%;
     position: absolute;
-    border-radius: 6px;
+    border-radius: 20px;
     left: 0;
     top: 0;
     transform-style: preserve-3d;
     backface-visibility: hidden;
-  }
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+}
 
+.card-front::before,
+.card-back::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: var(--gradient);
+}
 
 .card-back {
     transform: rotateY(180deg);
 }
 
-/* Adjust padding in center-wrap for better spacing in smaller card */
 .center-wrap {
-  width: 100%;
-  padding: 20px 25px; /* Reduced padding */
-  position: absolute;
-  top: 50%;
-  left: 0;
-  transform: translate3d(0, -50%, 35px) perspective(100px);
-  z-index: 20;
-  display: block;
+    width: 100%;
+    padding: 20px 25px;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translate3d(0, -50%, 35px) perspective(100px);
+    z-index: 20;
+    display: block;
 }
 
-
 .heading {
-    font-size: 20px; /* Smaller font size */
-  margin-bottom: 20px; /* Reduced margin */
+    font-size: 24px;
+    margin-bottom: 20px;
     text-transform: uppercase;
     color: white;
+    letter-spacing: 2px;
+    text-align: center;
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.heading::after {
+    content: '';
+    position: absolute;
+    width: 40px;
+    height: 3px;
+    background: var(--mainColor);
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 3px;
 }
 
 .form-group {
     position: relative;
     display: block;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+    perspective: 1000px;
 }
 
 .form-group input::placeholder {
@@ -213,18 +274,19 @@ input[type="checkbox"] {
 
 .form-group input:focus::placeholder {
     opacity: 0;
+    transform: translateX(10px);
     transition: all .2s linear;
 }
 
 .form-style {
-    padding: 10px 15px;  /* Increased padding */
+    padding: 10px 15px;
     margin-bottom: 15px;
-    padding-left: 60px;   /* Adjusted padding to accommodate the icon */
-    height: 55px;         /* Increased height */
-    font-size: 16px;      /* Increased font size */
+    padding-left: 60px;
+    height: 55px;
+    font-size: 16px;
     width: 100%;
     font-weight: 500;
-    border-radius: 4px;
+    border-radius: 30px;
     line-height: 22px;
     letter-spacing: 0.5px;
     outline: none;
@@ -232,14 +294,15 @@ input[type="checkbox"] {
     background-color: #242323;
     border: none;
     box-shadow: var(--shadow);
+    transition: all 0.3s ease;
 }
-
 
 .form-style:focus,
 .form-style:active {
     border: none;
     outline: none;
-    box-shadow: var(--shadow);
+    box-shadow: 0 8px 24px 0 rgba(21, 21, 21, .4);
+    transform: translateY(-2px);
 }
 
 .input-icon {
@@ -250,73 +313,35 @@ input[type="checkbox"] {
     font-size: 24px;
     text-align: left;
     color: var(--mainColor);
-    transition: all .2s linear;
+    transition: all .3s ease;
 }
 
-
-
-
-/* -- External Social Link CSS Styles -- */
-
-#source-link {
-    top: 120px;
+.form-group:hover .input-icon {
+    transform: translateY(-2px);
+    color: #ff6b6b;
 }
 
-#source-link>i {
-    color: rgb(94, 106, 210);
+.spinner {
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top: 4px solid var(--mainColor);
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
 }
 
-#yt-link {
-    top: 65px;
-}
-
-#yt-link>i {
-    color: rgb(219, 31, 106);
-
-}
-
-#Fund-link {
-    top: 10px;
-}
-
-#Fund-link>i {
-    color: rgb(255, 251, 0);
-
-}
-
-.meta-link {
-    align-items: center;
-    backdrop-filter: blur(3px);
-    background-color: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 6px;
-    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
-    display: inline-flex;
-    gap: 5px;
-    left: 10px;
-    padding: 10px 20px;
-    position: fixed;
-    text-decoration: none;
-    transition: background-color 600ms, border-color 600ms;
-    z-index: 10000;
-}
-
-.meta-link:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.meta-link>i,
-.meta-link>span {
-    height: 20px;
-    line-height: 20px;
-}
-
-.meta-link>span {
-    color: white;
-    font-family: "Rubik", sans-serif;
-    transition: color 600ms;
+@keyframes spin {
+    0% {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+    100% {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
 }
 
 .signup-text {
@@ -339,62 +364,184 @@ input[type="checkbox"] {
     font-weight: 600;
     color: var(--mainColor);
     text-decoration: none;
-    padding: 5px 10px;
-    border-radius: 5px;
+    padding: 6px 12px;
+    border-radius: 20px;
     transition: all 0.3s ease;
     position: relative;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.signup-link::after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 2px;
-    background-color: var(--mainColor);
-    bottom: 0;
-    left: 0;
-    transform: scaleX(0);
-    transform-origin: bottom right;
-    transition: transform 0.3s ease;
 }
 
 .signup-link:hover {
     color: var(--white);
     background-color: var(--mainColor);
     box-shadow: 0 6px 12px rgba(220, 20, 60, 0.3);
+    transform: translateY(-3px);
 }
 
-.signup-link:hover::after {
-    transform: scaleX(1);
-    transform-origin: bottom left;
+.signup-link i {
+    transition: all 0.3s ease;
 }
-.signup-link {
-    animation: pulse 2s infinite;
+
+.signup-link:hover i {
+    transform: translateX(5px);
 }
 
 @keyframes pulse {
     0% {
         transform: scale(1);
+        box-shadow: 0 4px 6px rgba(220, 20, 60, 0.3);
     }
     50% {
         transform: scale(1.05);
+        box-shadow: 0 8px 15px rgba(220, 20, 60, 0.4);
     }
     100% {
         transform: scale(1);
+        box-shadow: 0 4px 6px rgba(220, 20, 60, 0.3);
     }
 }
 
-.spinner {
-    border: 4px solid rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    border-top: 4px solid var(--mainColor);
-    width: 40px;
-    height: 40px;
-    animation: spin 1s linear infinite;
+.signup-link {
+    animation: pulse 2s infinite;
 }
 
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.modal.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-box {
+    background-color: #2a2b38;
+    padding: 25px;
+    border-radius: 10px;
+    max-width: 400px;
+    width: 100%;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+    transform: scale(0.8);
+    transition: all 0.3s ease;
+}
+
+.modal.active .modal-box {
+    transform: scale(1);
+}
+
+/* Floating particles animation */
+.particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.particle {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    animation: float 15s infinite linear;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-1000px) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+/* Success checkmark animation */
+.checkmark {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: block;
+    stroke-width: 2;
+    stroke: #4bb71b;
+    stroke-miterlimit: 10;
+    box-shadow: inset 0px 0px 0px #4bb71b;
+    animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+    position: relative;
+    top: 5px;
+    right: 5px;
+    margin: 0 auto;
+    margin-bottom: 15px;
+}
+
+.checkmark__circle {
+    stroke-dasharray: 166;
+    stroke-dashoffset: 166;
+    stroke-width: 2;
+    stroke-miterlimit: 10;
+    stroke: #4bb71b;
+    fill: none;
+    animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.checkmark__check {
+    transform-origin: 50% 50%;
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+}
+
+@keyframes stroke {
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes scale {
+    0%, 100% {
+        transform: none;
+    }
+    50% {
+        transform: scale3d(1.1, 1.1, 1);
+    }
+}
+
+@keyframes fill {
+    100% {
+        box-shadow: inset 0px 0px 0px 30px #4bb71b;
+    }
+}
+
+/* Input focus animation */
+.form-style:focus + .input-icon {
+    animation: iconBounce 0.5s ease;
+}
+
+@keyframes iconBounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+/* Card hover effect */
+.card-3d-wrap:hover .card-front,
+.card-3d-wrap:hover .card-back {
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
 }
