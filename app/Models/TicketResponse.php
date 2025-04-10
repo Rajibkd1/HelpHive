@@ -13,7 +13,8 @@ class TicketResponse extends Model
         'response',
         'ticket_id',
         'agent_id',
-        'file_path'
+        'file_path',
+        'customer_id',  // Add customer_id to the fillable array
     ];
 
     // Relationship: A ticket response belongs to a ticket
@@ -26,5 +27,11 @@ class TicketResponse extends Model
     public function agent()
     {
         return $this->belongsTo(Agent::class);
+    }
+
+    // Relationship: A ticket response belongs to a customer
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
     }
 }

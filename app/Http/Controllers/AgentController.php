@@ -141,7 +141,8 @@ class AgentController extends Controller
         TicketResponse::create([
             'response' => $request->input('response'),
             'ticket_id' => $ticket->id,
-            'agent_id' => $agentId, // The logged-in agent
+            'agent_id' => $agentId, 
+            'customer_id' => null,// The logged-in agent
             'file_path' => $filePath, // File path if a file was uploaded
         ]);
 

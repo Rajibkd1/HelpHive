@@ -28,6 +28,10 @@ Route::get('/customer-dashboard', [CustomerDashboardController::class, 'index'])
     ->middleware('role:customer')
     ->name('customer.dashboard');  // Apply role middleware for customers and add name
 
+    Route::get('/help-center', function () {
+        return view('help_center'); // This loads the help_center.blade.php file
+    })->name('help-center');
+    
 
 // Protect routes with authentication middleware
 Route::middleware('role:customer')->group(function () {
@@ -39,9 +43,11 @@ Route::middleware('role:customer')->group(function () {
     // Route to show tickets
     Route::get('/customer-dashboard/tickets', [CustomerDashboardController::class, 'showTickets'])->name('customer.tickets');
     Route::get('/customer-dashboard/ticket/{ticketId}', [CustomerDashboardController::class, 'showTicketDetails'])->name('cus-ticket.details');
+    Route::post('customer/ticket/{ticket}/reply', [CustomerDashboardController::class, 'storeReply'])->name('customer.ticket.reply');
 
     Route::get('/customer/ticket/create', [CustomerDashboardController::class, 'createTicket'])->name('ticket.create');
     Route::post('/customer/ticket/store', [CustomerDashboardController::class, 'storeTicket'])->name('ticket.store');
+
 });
 
 

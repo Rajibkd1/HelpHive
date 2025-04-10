@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use App\Models\Department;
 use App\Models\Ticket;
+use App\Models\TicketResponse;
 use App\Models\Upload;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -122,7 +123,7 @@ class CustomerDashboardController extends Controller
 
     public function showTickets()
     {
-        $user = session('user');  
+        $user = session('user');
 
         if (!$user) {
             return redirect()->route('login')->withErrors(['email' => 'Please log in to view your tickets.']);
@@ -138,7 +139,7 @@ class CustomerDashboardController extends Controller
     {
         $user = session('user');
 
-        $ticket = Ticket::with(['responses', 'uploads'])->findOrFail($ticketId); 
+        $ticket = Ticket::with(['responses', 'uploads'])->findOrFail($ticketId);
 
         return view('customer.ticket.details', compact('ticket', 'user'));
     }
@@ -193,5 +194,47 @@ class CustomerDashboardController extends Controller
 
         // Redirect back with success message
         return redirect()->route('customer.dashboard')->with('success', 'Ticket created successfully!');
+    }
+
+    public function storeReply(Request $request, Ticket $ticket)
+    {
+        // Validate the request
+        $request->validate([
+            'customer_response' => 'required|string|max:10000',
+            'customer_attachments' => 'nullable|array|max:5', // Only allow up to 5 files
+            'customer_attachments.*' => 'file|max:10240', // Max file size: 10MB
+            'priority' => 'nullable|string|in:low,medium,high,urgent',
+            'category' => 'nullable|string|in:general,technical,billing,feature',
+        ]);
+
+        // Get the current user (customer) from the session or authentication
+        $user = session('user'); // This assumes the customer is stored in session
+        if (!$user) {
+            return redirect()->route('login')->with('error', 'You must be logged in as a customer.');
+        }
+        $customer_id = $user->id;
+
+        // Prepare the file path if any files were uploaded
+        $filePaths = [];
+        if ($request->hasFile('customer_attachments')) {
+            foreach ($request->file('customer_attachments') as $file) {
+                // Store each file
+                $filename = $file->getClientOriginalName();
+                $path = $file->storeAs('public/uploads', $filename);
+                $filePaths[] = str_replace('public/', '', $path); // Store the relative file path
+            }
+        }
+
+        // Create the ticket response
+        // Create the ticket response
+        TicketResponse::create([
+            'response' => $request->input('customer_response'),
+            'ticket_id' => $ticket->id,
+            'customer_id' => $customer_id, // For customer replies
+            'agent_id' => null, // Set agent_id to null for customer replies
+            'file_path' => implode(',', $filePaths), // Multiple files stored as comma-separated paths
+        ]);
+        // Return a response (e.g., redirect back or send a success response)
+        return redirect()->route('cus-ticket.details', $ticket->id)->with('success', 'Your reply has been submitted successfully.');
     }
 }

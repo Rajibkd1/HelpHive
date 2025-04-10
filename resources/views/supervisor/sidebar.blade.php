@@ -4,10 +4,43 @@
 
 <head>
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
+       body {
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-start;
+                height: 100vh;
+                overflow: hidden;
+                font-family: 'Inter', sans-serif;
+            }
 
+            main {
+                min-height: calc(100vh - 64px);
+                max-height: calc(100vh - 64px);
+                overflow-y: auto;
+                padding-top: 8px;
+                padding-left: 16rem;
+                /* Offset the content for sidebar */
+            }
+
+            /* Fix any overflow issues for sidebar */
+            #sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                z-index: 30;
+                width: 16rem;
+                /* Sidebar width */
+            }
+
+            #sidebar+.lg\:pl-64 {
+                padding-left: 64px;
+            }
+
+            #sidebar-content {
+                overflow-y: auto;
+                /* Allow scrolling for sidebar content */
+            }
         @media (min-width: 1024px) {
             .lg\:pl-64 {
                 padding-left: 16rem;
@@ -373,7 +406,7 @@
         </header>
 
         <!-- Main Content -->
-        <main class="pt-16 p-6 mt-48">
+        <main class="lg:pl-64 pt-16 p-6 mt-36">
             @yield('sidebar-content')
         </main>
     </div>

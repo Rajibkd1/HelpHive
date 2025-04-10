@@ -15,27 +15,22 @@
 
             main {
                 min-height: calc(100vh - 64px);
-                /* This takes into account the header height */
                 max-height: calc(100vh - 64px);
-                /* Restrict maximum height */
                 overflow-y: auto;
-                /* Allow vertical scrolling */
-                padding-top: 16px;
-                /* Adjust padding if necessary */
+                padding-top: 8px;
+                padding-left: 16rem;
+                /* Offset the content for sidebar */
             }
 
             /* Fix any overflow issues for sidebar */
-            #sidebar {
-                max-height: 100vh;
-                overflow-y: auto;
-            }
-
             #sidebar {
                 position: fixed;
                 top: 0;
                 left: 0;
                 bottom: 0;
                 z-index: 30;
+                width: 16rem;
+                /* Sidebar width */
             }
 
             #sidebar+.lg\:pl-64 {
@@ -394,8 +389,8 @@
                 </div>
             </header>
 
-            <!-- Main Content -->
-            <main class="pt-16 p-6 mt-48">
+             <!-- Main Content -->
+             <main class="lg:pl-64 pt-16 p-6 mt-36">
                 @yield('sidebar-content')
             </main>
         </div>
