@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Agent;
+use App\Models\Customer;
 use App\Models\Department;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
@@ -183,6 +184,34 @@ class SupervisorController extends Controller
         ]);
 
         return redirect()->route('departments.index')->with('success', 'Department updated successfully!');
+    }
+
+    public function showCustomerList()
+    {
+        // Get all customers with their ticket count
+        $customers = Customer::withCount('tickets')->paginate(10);
+
+        return view('supervisor.customer_list', compact('customers'));
+    }
+
+    // Show customer details
+    public function showCustomer($customerId)
+    {
+        $customer = Customer::with('tickets')->findOrFail($customerId);
+
+        // Paginate the tickets with 10 per page (adjust as needed)
+        $tickets = $customer->tickets()->paginate(7);
+
+        return view('supervisor.customer_show', compact('customer', 'tickets'));
+    }
+
+
+    public function destroyCustomer(Customer $customer)
+    {
+        // Delete the customer
+        $customer->delete();
+
+        return redirect()->route('customers.index')->with('success', 'Customer deleted successfully!');
     }
 
     public function cannedReplies()

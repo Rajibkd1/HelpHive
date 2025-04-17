@@ -28,15 +28,12 @@ class CustomerDashboardController extends Controller
 
         $monthlyTickets = Ticket::selectRaw('MONTH(created_at) as month, count(*) as count')
             ->where('customer_id', $user->id)
-            ->whereNotNull('created_at')  // Exclude tickets with NULL created_at
-            ->whereYear('created_at', now()->year)  // Filter tickets by the current year
-            ->whereMonth('created_at', now()->month)  // Filter tickets by the current month
             ->groupBy('month')
-            ->pluck('count', 'month')
-            ->toArray(); // Ensure this is always an array
+            ->orderBy('month', 'asc')
+            ->pluck('count', 'month')->toArray();
 
         // Ensure all months are represented (even if no tickets for some months)
-        $monthlyTickets = array_merge(array_fill(1, 12, 0), $monthlyTickets);
+        // $monthlyTickets = array_merge(array_fill(1, 12, 0), $monthlyTickets);
 
 
 
@@ -225,7 +222,6 @@ class CustomerDashboardController extends Controller
             }
         }
 
-        // Create the ticket response
         // Create the ticket response
         TicketResponse::create([
             'response' => $request->input('customer_response'),

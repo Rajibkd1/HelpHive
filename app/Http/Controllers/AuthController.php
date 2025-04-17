@@ -18,7 +18,7 @@ class AuthController extends Controller
     // Show login/register page
     public function showAuthForm()
     {
-        return view('auth');
+        return view('auth.auth');
     }
 
     // Handle login
@@ -76,9 +76,9 @@ class AuthController extends Controller
             'role' => $request->role,
         ]);
 
-        Auth::login($customer);
+        // Auth::login($customer);
 
-        return redirect()->route('dashboard');
+        return redirect()->route('auth');
     }
 
 

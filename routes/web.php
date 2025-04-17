@@ -9,7 +9,10 @@ use App\Models\Customer;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\OTPController;
+use App\Http\Controllers\SplashController;
 use App\Http\Controllers\SupervisorController;
+
+Route::get('/', [SplashController::class, 'index'])->name('splash');
 
 Route::get('/auth', [AuthController::class, 'showAuthForm'])->name('auth');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
@@ -28,10 +31,17 @@ Route::get('/customer-dashboard', [CustomerDashboardController::class, 'index'])
     ->middleware('role:customer')
     ->name('customer.dashboard');  // Apply role middleware for customers and add name
 
-    Route::get('/help-center', function () {
-        return view('help_center'); // This loads the help_center.blade.php file
-    })->name('help-center');
-    
+Route::get('/help-center', function () {
+    return view('help_center'); // This loads the help_center.blade.php file
+})->name('help-center');
+
+
+
+
+
+
+
+
 
 // Protect routes with authentication middleware
 Route::middleware('role:customer')->group(function () {
@@ -47,8 +57,11 @@ Route::middleware('role:customer')->group(function () {
 
     Route::get('/customer/ticket/create', [CustomerDashboardController::class, 'createTicket'])->name('ticket.create');
     Route::post('/customer/ticket/store', [CustomerDashboardController::class, 'storeTicket'])->name('ticket.store');
-
 });
+
+
+
+
 
 
 // Protect routes with authentication middleware
@@ -74,24 +87,41 @@ Route::middleware('role:supervisor')->group(function () {
     Route::get('/agents', [AgentController::class, 'agentlist'])->name('agents.index');
 
     // Show the 'Add New Agent' form
-Route::get('create-agent', [AgentController::class, 'create'])->name('create.agent');
+    Route::get('create-agent', [AgentController::class, 'create'])->name('create.agent');
 
-// Store the new agent
-Route::post('create-agent', [AgentController::class, 'store'])->name('store.agent');
+    // Store the new agent
+    Route::post('create-agent', [AgentController::class, 'store'])->name('store.agent');
+    // Show the edit agent form
+    Route::get('agents/{agent}/edit', [AgentController::class, 'edit'])->name('agents.edit');
+    
+    // Update agent
+    Route::put('agents/{agent}', [AgentController::class, 'update'])->name('agents.update');
+    
+    // Delete agent
+    Route::delete('agents/{agent}', [AgentController::class, 'destroy'])->name('agents.destroy');
 
-// Show list of departments
-Route::get('departments', [SupervisorController::class, 'showDepartments'])->name('departments.index');
+    // Show list of departments
+    Route::get('departments', [SupervisorController::class, 'showDepartments'])->name('departments.index');
 
-// Create a new department (Form)
-Route::get('departments/create', [SupervisorController::class, 'createDepartment'])->name('departments.create');
+    // Create a new department (Form)
+    Route::get('departments/create', [SupervisorController::class, 'createDepartment'])->name('departments.create');
 
-// Store the newly created department
-Route::post('departments', [SupervisorController::class, 'storeDepartment'])->name('departments.store');
-// Show the edit form for a department
-Route::get('departments/{department}/edit', [SupervisorController::class, 'editDepartment'])->name('departments.edit');
+    // Store the newly created department
+    Route::post('departments', [SupervisorController::class, 'storeDepartment'])->name('departments.store');
+    // Show the edit form for a department
+    Route::get('departments/{department}/edit', [SupervisorController::class, 'editDepartment'])->name('departments.edit');
 
-// Update the department
-Route::put('departments/{department}', [SupervisorController::class, 'updateDepartment'])->name('departments.update');
+    // Update the department
+    Route::put('departments/{department}', [SupervisorController::class, 'updateDepartment'])->name('departments.update');
+
+     // Show list of customers
+     Route::get('/customers', [SupervisorController::class, 'showCustomerList'])->name('customers.index');
+     // Route for supervisor to view customer details
+Route::get('/supervisor/customers/{id}', [SupervisorController::class, 'showCustomer'])->name('supervisor.customers.show');
+
+
+     // Delete customer
+     Route::delete('/customers/{customer}', [SupervisorController::class, 'destroyCustomer'])->name('customers.destroy');
 
     Route::get('labels', [SupervisorController::class, 'labels'])->name('labels');
     Route::get('statuses', [SupervisorController::class, 'statuses'])->name('statuses');
@@ -105,10 +135,16 @@ Route::put('departments/{department}', [SupervisorController::class, 'updateDepa
 // Route::middleware('role:agent')->get('/ticket/{ticketId}', [AgentController::class, 'showTicketDetails'])->name('ticket-details-show');
 
 
+
+
+
+
+
+
 Route::middleware('role:agent')->group(function () {
     Route::get('/agent/dashboard', [AgentController::class, 'index'])->name('agent.dashboard');
     Route::get('/agent/tickets', [AgentController::class, 'showTickets'])->name('agent.tickets-show');
- 
+
     Route::get('agent/ticket/{ticketId}', [AgentController::class, 'showTicketDetails'])->name('ticket-details-show');
     // This route handles the reply submission for the ticket
     Route::post('agent/ticket/{ticket}/reply', [AgentController::class, 'storeReply'])->name('ticket.reply');

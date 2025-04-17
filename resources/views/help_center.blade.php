@@ -458,8 +458,8 @@
     </div>
   </div>
 
-  <!-- CTA Section -->
+  {{-- <!-- CTA Section -->
   <div class="bg-yellow-500">
-    <div class="max-w-7xl
+    <div class="max-w-7xl --}}
 
 @endsection

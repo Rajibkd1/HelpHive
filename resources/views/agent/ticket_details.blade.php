@@ -76,7 +76,7 @@
     </head>
 
     <body class="bg-gray-50">
-        <div class="max-w-6xl mx-auto p-4 sm:p-6 mt-12 lg:p-8">
+        <div class="max-w-6xl mx-auto">
             <!-- Header with improved styling -->
             <div class="flex justify-between items-center mb-8">
                 <div>

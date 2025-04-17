@@ -253,13 +253,13 @@
 
                 <li>
                     <a href="{{ route('departments.index') }}" class="sidebar-item flex items-center gap-4 px-4 py-3 text-slate-300 hover:bg-slate-700 rounded-md group transition-all duration-200" onclick="selectItem(event)">
-                        <svg class="w-6 h-6 text-emerald-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 3v18M18 3v18M6 9h12m-12 6h12"/>
-                        </svg>   
+                        <svg class="w-6 h-6 text-emerald-400 group-hover:scale-110 transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z" />
+                        </svg>
                         <span>Departments</span>
                     </a>
                 </li>
-                
+
                 <li>
                     <a href="#" class="sidebar-item flex items-center gap-4 px-4 py-3 text-slate-300 hover:bg-slate-700 rounded-md group transition-all duration-200" onclick="selectItem(event)">
                         <svg class="w-6 h-6 text-emerald-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -289,22 +289,25 @@
                 
                 <li>
                     <a href="{{ route('agents.index') }}" class="sidebar-item flex items-center gap-4 px-4 py-3 text-slate-300 hover:bg-slate-700 rounded-md group transition-all duration-200" onclick="selectItem(event)">
-                        <svg class="w-6 h-6 text-emerald-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 9V5a2 2 0 112 0v4a2 2 0 11-2 0zm8 0V5a2 2 0 112 0v4a2 2 0 11-2 0z"></path>
+                        <svg class="w-6 h-6 text-emerald-400 group-hover:scale-110 transition-transform" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                            <!-- This SVG path is from FontAwesome's free "user-secret" icon -->
+                            <path fill="currentColor" d="M224 256a64 64 0 1 0 64-64 64 64 0 0 0-64 64zm-15.49-96a31.99 31.99 0 1 1-31.99 32 32 32 0 0 1 31.99-32zm224 0a31.99 31.99 0 1 1-31.99 32 32 32 0 0 1 31.99-32zm-224 112c-35.35 0-64 28.65-64 64v16c0 26.51 21.49 48 48 48h32c26.51 0 48-21.49 48-48v-16c0-35.35-28.65-64-64-64zm224 0c-35.35 0-64 28.65-64 64v16c0 26.51 21.49 48 48 48h32c26.51 0 48-21.49 48-48v-16c0-35.35-28.65-64-64-64zm-112 96c-66.27 0-124-33.38-124-112 0-36.24 17.61-72.27 50.12-94.52 11.6-8.09 26.36-12.13 41.88-12.13s30.28 4.04 41.88 12.13c32.51 22.25 50.12 58.28 50.12 94.52 0 78.62-57.73 112-124 112z"/>
                         </svg>
-                        <span>Users</span>
+                        <span>Agent</span>
                     </a>
                 </li>
                 
+                
+                
                 <li>
-                    <a href="#" class="sidebar-item flex items-center gap-4 px-4 py-3 text-slate-300 hover:bg-slate-700 rounded-md group transition-all duration-200" onclick="selectItem(event)">
-                        <svg class="w-6 h-6 text-emerald-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v12"></path>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 12h12"></path>
-                        </svg>
-                        <span>User Roles</span>
+                    <a href="{{ route('customers.index') }}" class="sidebar-item flex items-center gap-4 px-4 py-3 text-slate-300 hover:bg-slate-700 rounded-md group transition-all duration-200" onclick="selectItem(event)">
+                        <i class="fas fa-users w-6 h-6 text-emerald-400 group-hover:scale-110 transition-transform"></i>
+                        <span>Customers</span>
                     </a>
                 </li>
+                
+                
+                
 
                 <div class="my-4 border-t border-slate-700"></div>
                 <div class="text-slate-400 text-xs uppercase font-semibold mb-2 pl-4">Settings</div>
@@ -317,17 +320,7 @@
                         </svg>
                         <span>Settings</span>
                     </a>
-                </li>
-
-                <li>
-                    <a href="#" class="sidebar-item flex items-center gap-4 px-4 py-3 text-slate-300 hover:bg-slate-700 rounded-md group transition-all duration-200" onclick="selectItem(event)">
-                        <svg class="w-6 h-6 text-emerald-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12m0 0h3M3 5v13m15-13v13"></path>
-                        </svg>
-                        <span>Translations</span>
-                    </a>
-                </li>
-                
+                </li>                
                 <li>
                     <a href="{{ route('logout') }}" class="sidebar-item flex items-center gap-4 px-4 py-3 text-slate-300 hover:bg-red-700 rounded-md group transition-all duration-200" onclick="selectItem(event)">
                         <svg class="w-6 h-6 text-red-400 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -362,51 +355,92 @@
 
     <!-- Main Content -->
     <div class="lg:pl-64 min-h-screen">
-        <!-- Header -->
-        <header class="bg-white border-b h-16 fixed top-0 right-0 left-0 lg:left-64 z-10">
-            <div class="flex items-center justify-between h-full px-4">
-                <!-- Mobile menu button -->
-                <button onclick="toggleMobileMenu()" class="lg:hidden p-2 rounded-md hover:bg-gray-100">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
-                </button>
+       <!-- Improved Header -->
+<!-- Elegant Header -->
+<!-- Responsive Header -->
+<header class="bg-white border-b h-16 fixed top-0 right-0 left-0 lg:left-64 z-10 shadow-sm">
+    <div class="flex items-center justify-between h-full px-4 sm:px-6">
+        <!-- Mobile menu button -->
+        <button onclick="toggleMobileMenu()" class="lg:hidden p-2 rounded-md hover:bg-gray-100 transition-colors">
+            <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+        </button>
 
-                <!-- Search -->
-                <div class="flex-1 max-w-md ml-4">
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3">
-                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                            </svg>
-                        </span>
-                        <input type="search" placeholder="Search for something..." class="w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all">
+        <!-- Time and Greeting - Visible on all devices -->
+        <div class="flex items-center gap-2 sm:gap-3">
+            <svg class="w-5 h-5 sm:w-6 sm:h-6 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span class="text-xs sm:text-sm text-gray-700 font-medium" id="current-time"></span>
+        </div>
+
+        <!-- Right side icons and user info -->
+        <div class="flex items-center gap-3 sm:gap-4">
+            <!-- Notifications -->
+            <div class="relative group">
+                <a href="#" class="p-2 hover:bg-gray-100 rounded-full transition-all relative">
+                    <span class="absolute -top-1 -right-1 h-4 w-4 bg-red-500 text-xs text-white rounded-full flex items-center justify-center">5</span>
+                    <svg class="w-5 h-5 sm:w-6 sm:h-6 text-gray-600 group-hover:text-emerald-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                    </svg>
+                </a>
+            </div>
+
+            <!-- User Profile and Logout -->
+            <div class="flex items-center gap-2 sm:gap-3">
+                <div class="flex items-center gap-2 sm:gap-3 bg-gray-50 px-2 sm:px-3 py-1 rounded-full">
+                    <div class="w-7 h-7 sm:w-9 sm:h-9 rounded-full border-2 border-emerald-500 overflow-hidden">
+                        <img src="{{ session('user')->profile_picture ? asset('storage/' . session('user')->profile_picture) : asset('default.png') }}"
+                            alt="Profile" class="w-full h-full object-cover">
+                    </div>
+                    <div class="hidden sm:block">
+                        <p class="text-xs sm:text-sm font-semibold text-gray-700">{{ session('user')->name ?? 'Guest' }}</p>
                     </div>
                 </div>
 
-                <!-- Right side icons -->
-                <div class="flex items-center gap-4">
-                    <span class="hidden lg:block text-sm text-gray-600">Welcome to Supervisor Dashboard</span>
-
-                    <a href="#" class="relative p-2 hover:bg-gray-100 rounded-full transition-all">
-                        <span class="notification-badge absolute top-0 right-0 h-4 w-4 bg-red-500 text-xs text-white rounded-full flex items-center justify-center">5</span>
-                        <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
-                        </svg>
-                    </a>
-
-                    <a href="#" class="relative p-2 hover:bg-gray-100 rounded-full transition-all">
-                        <span class="notification-badge absolute top-0 right-0 h-4 w-4 bg-red-500 text-xs text-white rounded-full flex items-center justify-center">3</span>
-                        <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                        </svg>
-                    </a>
-                </div>
+                <!-- Logout Button -->
+                <a href="{{ route('logout') }}" class="group p-2 hover:bg-red-50 rounded-full transition-all">
+                    <svg class="w-5 h-5 sm:w-6 sm:h-6 text-red-400 group-hover:text-red-600 group-hover:scale-110 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                    </svg>
+                </a>
             </div>
-        </header>
+        </div>
+    </div>
+</header>
 
+<!-- Time Script -->
+<script>
+    function updateTime() {
+        const now = new Date();
+        const timeElement = document.getElementById('current-time');
+        
+        // Different formats for mobile and desktop
+        const isMobile = window.innerWidth < 640;
+        const options = isMobile 
+            ? { hour: 'numeric', minute: '2-digit', hour12: true }
+            : { 
+                hour: 'numeric', 
+                minute: '2-digit', 
+                hour12: true,
+                weekday: 'long',
+                month: 'long',
+                day: 'numeric'
+            };
+        
+        timeElement.textContent = now.toLocaleString('en-US', options);
+    }
+    
+    // Update time immediately and then every minute
+    updateTime();
+    setInterval(updateTime, 60000);
+
+    // Update on resize to change time format
+    window.addEventListener('resize', updateTime);
+</script>
         <!-- Main Content -->
-        <main class="lg:pl-64 pt-16 p-6 mt-36">
+        <main class="lg:pl-64 pt-12 p-6 mt-36">
             @yield('sidebar-content')
         </main>
     </div>

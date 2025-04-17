@@ -32,7 +32,7 @@ class AgentController extends Controller
             ->pluck('count', 'month')->toArray();
 
 
-        $monthlyTickets = array_merge(array_fill(1, 12, 0), $monthlyTickets);
+        // $monthlyTickets = array_merge(array_fill(1, 12, 0), $monthlyTickets);
 
         // Pass the data to the view
         return view('agent.dashboard', compact(
@@ -108,6 +108,46 @@ class AgentController extends Controller
 
         return redirect()->route('agents.index')->with('success', 'Agent created successfully!');
     }
+
+    public function edit(Agent $agent)
+    {
+        // Get all departments to show in the select list
+        $departments = Department::all();
+
+        return view('supervisor.edit_agent', compact('agent', 'departments'));
+    }
+
+
+    public function update(Request $request, Agent $agent)
+    {
+        // Validate input data
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:agents,email,' . $agent->id,
+            'password' => 'nullable|string|min:6|confirmed',
+            'department_id' => 'required|exists:departments,id',
+        ]);
+
+        // Update agent information
+        $agent->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => $request->password ? bcrypt($request->password) : $agent->password,
+            'department_id' => $request->department_id,
+        ]);
+
+        return redirect()->route('agents.index')->with('success', 'Agent updated successfully!');
+    }
+
+    public function destroy(Agent $agent)
+    {
+        // Delete the agent
+        $agent->delete();
+
+        return redirect()->route('agents.index')->with('success', 'Agent deleted successfully!');
+    }
+
+
     public function storeReply(Request $request, Ticket $ticket)
     {
         // Retrieve the logged-in agent from the session
@@ -115,48 +155,47 @@ class AgentController extends Controller
         if (!$user) {
             return redirect()->route('login')->with('error', 'You must be logged in as an agent.');
         }
-
+    
         $agentId = $user->id;
-
+    
         // Validate the incoming request (response and optional file)
-        $request->validate([
+        $validated = $request->validate([
             'response' => 'required|string|max:10000',
-            'file' => 'nullable|file|max:10240', // Max file size: 10MB
+            'attachments' => 'nullable|array',
+            'attachments.*' => 'file|max:10240', // Validate each file
+            'status' => 'nullable|string|in:open,pending,resolved,closed'
         ]);
-
-        // Handle file upload if present
-        $filePath = null;
-        if ($request->hasFile('file')) {
-            $file = $request->file('file');
-            $filename = $file->getClientOriginalName();
-
-            // Store the file in the 'public/uploads' directory (relative to 'storage/app')
-            $path = $file->storeAs('public/uploads', $filename); // This will store the file in 'storage/app/public/uploads'
-
-            // Store the file path in the $filePath variable (to be saved in TicketResponse)
-            $filePath = str_replace('public/', '', $path); // Store relative path 'uploads/filename'
+    
+        // Handle file uploads if present
+        $filePaths = [];
+        if ($request->hasFile('attachments')) {
+            foreach ($request->file('attachments') as $file) {
+                // Store each file
+                $filename = $file->getClientOriginalName();
+                $path = $file->storeAs('public/uploads', $filename);
+                $filePaths[] = str_replace('public/', '', $path); 
+            }
         }
-
+    
         // Save the reply in the TicketResponse model
-        TicketResponse::create([
-            'response' => $request->input('response'),
+        $ticketResponse = TicketResponse::create([
+            'response' => $request->input('response'), // Correct response input
             'ticket_id' => $ticket->id,
-            'agent_id' => $agentId, 
-            'customer_id' => null,// The logged-in agent
-            'file_path' => $filePath, // File path if a file was uploaded
+            'agent_id' => $agentId,
+            'customer_id' => null,
+            'file_path' => count($filePaths) > 0 ? implode(',', $filePaths) : null,
         ]);
-
-        // Optionally, update the ticket status
+    
+        // Update ticket status
         if ($request->has('status')) {
-            $ticket->update(['status' => $request->input('status')]);
+            $ticket->update([
+                'status' => $request->input('status'),
+                'last_response_at' => now(),
+            ]);
         }
-
-        // Optionally, mark the ticket as resolved if needed
-        if ($request->has('markAsResolved')) {
-            $ticket->update(['status' => 'resolved']);
-        }
-
-        // Return a response (e.g., redirect back or send a success response)
-        return redirect()->route('ticket-details-show', $ticket->id)->with('success', 'Reply sent successfully');
+    
+        // Return a response
+        return redirect()->route('ticket-details-show', $ticket->id)
+            ->with('success', 'Reply sent successfully');
     }
 }
